@@ -1,0 +1,145 @@
+P. and M. Curie-Paris 6 University
+LIP6 Laboratory
+PEQUAN Team
+
+CADNA_C library ChangeLog file.
+	
+2015/01/30
+	add i686-pc-mingw32 in configure.ac
+	
+2014/04/16
+	change in abs math function in cadna_intr.dcc for better instability detection  
+2014/04/14
+	add configuration for i386-apple-darwin.12.* and  x86_64-apple-darwin13.* 
+	in configure.ac
+	
+2013/12/06
+	suppression of a call to sqrt in nb_significant_digit() 
+	in cadna_digitnumber.dcc
+	
+2013/07/14
+        insertion of new math functions
+2013/02/26
+	suppression of rounding mode restore in cadna_computedzero.dcc,
+	cadna_convert.dcc, cadna_digitnumber.dcc, cadna_numericalnoise.dcc,
+	cadna_str.dcc.
+	
+2013/02/21
+	a new function approx_digit which returns 0 if a stochastic
+	number is non significant and RELIABLE_RESULT otherwise.
+	This is to avoid the function log call in the 
+	nb_significant_digit function
+	
+	change in cadna_convert.dcc:
+	in data_st switch absolute/relative error
+	
+        change in cadna_to.dcc:
+	if a double_st variable is assigned from a float,
+        it is pertubred with the relative error 1.E-7.
+	
+2013/01/30
+	in sources_generateur:
+        changes in cadna_math_gnu.dcc
+	simplification: rnd_arr called before computation 
+	and rnd_plinf called after computation, no more test 
+	to recover the previous rounding mode.
+	
+2012/07/05
+	in sources_generateur:
+	creation of cadna_complex.dcc
+	
+2012/06/12
+	in sources_generateur:
+	change in cadna_to.dcc to enable assignments float_st <-> double_st
+
+2012/06/11
+	in cadna_unstab.cc, suppression of:
+        extern FILE *unit_stability;
+
+2012/06/08
+	in sources_generateur:
+        creation of cadna_numericalnoise.dcc
+        and modification of Makefile, 
+	cadna_ge.dcc, cadna_gt.dcc,
+	cadna_le.dcc, cadna_lt.dcc
+	
+2012/04/04
+        modification in user.tex (doc)
+	
+2012/04/03
+        modification in cadna_computedzero
+	
+2012/02/16 
+	tiny modification in cadna_type.cc
+
+2012/02/08
+	adding of the PC-cygwin system
+	
+2012/02/07
+in cadna_ge.cc
+in int operator>=(const double_st& a, const double_st& b)
+  int r=res.nb_significant_digit()==0;
+replaced by:
+  int r=res.computedzero(); 
+and also for other >= overloadings
+same modification in cadna_gt.cc, cadna_le.cc and cadna_gt.cc.
+all modifications done in *.dcc files in sources_generateur
+	
+2012/01/25
+	correction in examples/Makefile.in 
+LDFLAGS= @LDFLAGS@ -lm
+becomes:
+LDFLAGS= @LDFLAGS@
+LDLIBS= -lm
+	
+2011/09/14
+	corrections in documentation (user.tex modified)
+
+2011/03/17
+	cadna_type.cc:
+	
+void cadna_enable(unsigned int tag)
+{
+  if (_cadna_max_instability==0) {
+
+	changed into:
+	
+	void cadna_enable(unsigned int tag)
+{
+  if (_cadna_max_instability==-2) {
+
+		
+2011/03/17	
+      cadna_unstab.cc:
+    _cadna_max_instability=-2; inserted at the end	
+	
+
+2011/03/17
+	cadna_type.cc:
+
+  if (_cadna_div_change & _cadna_mul_change & _cadna_power_change) 
+
+		changed into:
+
+  if (_cadna_div_tag & _cadna_mul_tag & _cadna_power_tag) 
+	
+	
+2010/07/21 
+	Modification to correct a behaviour bug in cadna_type function. In case
+	of cadna_init(0) no instability is detected and a message is given
+	in the end of the run.
+	
+2010/07/07
+	Modification in cadna_type
+	
+2010/05/01
+	Modification to take into account bugs of the mathematical functions
+	in the math library provided by GNU with the roounding mode 
+	+inf and -inf
+	
+2010/02/05
+	cadna_to : the correct precision is set inside the function.
+	data_st : data_st() is included in Robodoc
+	
+2010/01/21
+	add configuration for x86_64

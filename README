@@ -1,0 +1,33 @@
+P. and M. Curie-Paris 6 University
+LIP6 Laboratory
+PEQUAN Team
+
+
+ 
+To install the library, follow the instructions in the INSTALL file.
+
+Some examples :
+
+./configure FC=YourC++Compiler 
+./configure --prefix=TheInstallationDirectory
+./configure --enable-64bit
+./configure FC=YourC++Compiler  --prefix=TheInstallationDirectory --enable-64bit
+
+Then 
+make install
+
+Then, to compile and execute some test examples, just do:
+
+
+cd examples
+make clean 
+make
+
+
+Remarks : 
+
+Under Linux computer with Intel  and  icpc (Intel C++ Compiler), use a command line like : 
+
+./configure FC=icpc  --prefix=TheInstallationDirectory --enable-64bit
+
+

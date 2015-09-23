@@ -1,6 +1,4 @@
 # A C++-11 compliant version of the CADNA library
-# T. Helfer
-# 23/09/2015
 
 ## Overview of CADNA
 

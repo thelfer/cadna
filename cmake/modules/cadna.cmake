@@ -8,6 +8,7 @@ macro(cadna_project cadna_version_major cadna_version_minor cadna_version_patch)
   set(CADNA_VERSION_MAJOR "${cadna_version_major}")
   set(CADNA_VERSION_MINOR "${cadna_version_minor}")
   set(CADNA_VERSION_PATCH "${cadna_version_patch}")
+  add_definitions("-DVERSION=\"\\\"${VERSION}\\\"\"")
 endmacro(cadna_project)
 
 macro(install_header1 file)

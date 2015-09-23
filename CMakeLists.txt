@@ -56,4 +56,5 @@ endif(CMAKE_HOST_WIN32 OR CYGWIN)
 
 add_subdirectory(include) 
 add_subdirectory(src)
+add_subdirectory(cadna-config)
 add_subdirectory(tests)

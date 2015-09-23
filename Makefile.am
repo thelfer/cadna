@@ -1,6 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS= src include tests cmake
+SUBDIRS= src include cadna-config \
+	 tests cmake
 
 EXTRA_DIST = CMakeLists.txt          \
 	     README.md               \

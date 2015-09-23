@@ -6,7 +6,7 @@ AC_INIT(CADNA,3.0-dev, cadna-team@lip6.fr)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
 
-AM_INIT_AUTOMAKE([-Wall])
+AM_INIT_AUTOMAKE([-Wall dist-bzip2 tar-ustar])
 
 #disable static library generation by default
 AC_ENABLE_STATIC(no)
@@ -123,6 +123,8 @@ AC_CONFIG_FILES([
 	cmake/modules/Makefile
 	include/Makefile
 	src/Makefile
+	cadna-config/Makefile
+	cadna-config/cadna-config.hxx
 	tests/Makefile
 	])
 

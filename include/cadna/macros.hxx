@@ -8,7 +8,15 @@
 #ifndef _LIB_CADNA_CONFIG_HXX_
 #define _LIB_CADNA_CONFIG_HXX_
 
+#ifdef __GNUC__
+#ifndef __INTEL_COMPILER
 #define CADNA_ALWAYS_INLINE __attribute__((always_inline))
+#endif
+#endif
+#ifdef __INTEL_COMPILER
+#defined CADNA_ALWAYS_INLINE __forceinline
+#endif
+
 #if __cplusplus >= 201402L
 // This macro is used for non const member, which is supported by
 // C++14 and not C++11
@@ -16,6 +24,12 @@
 #else
 #define CADNA_CONSTEXPR inline
 #endif
+
+#ifdef CADNA_HAVE_NORETURN_ATTRIBUTE
+#define CADNA_NORETURN [[ noreturn ]]
+#else
+#define CADNA_NORETURN
+#endif /* CADNA_HAVE_NORETURN_ATTRIBUTE */
 
 #if defined _WIN32 || defined _WIN64 ||defined __CYGWIN__
 #define CADNA_IMPORT __declspec(dllimport)

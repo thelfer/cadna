@@ -1,8 +1,8 @@
-% A C++-11 compliant version of the CADNA library
-% T. Helfer
-% 23/09/2015
+# A C++-11 compliant version of the CADNA library
+# T. Helfer
+# 23/09/2015
 
-# Overview of CADNA
+## Overview of CADNA
 
 The CADNA (Control of Accuracy and Debugging for Numerical
 Applications) software estimates round-off errors in numerical
@@ -30,7 +30,7 @@ The official website of CADNA is hosted at:
 
 <http://www-pequan.lip6.fr/cadna/>
 
-# Purpose of this repository
+## Purpose of this repository
 
 This repository contains an experimental implementation of CADNA based
 on C++-11 which aims at being more standard compliant.

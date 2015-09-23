@@ -66,8 +66,8 @@ namespace cadna{
 	fract_res=0.0;
       }
       else{
-	if (res>=1.0) nn=(int)log10(res)+1;
-	else  nn= (int)log10(res);
+	if (res>=1.0) nn=static_cast<int>(log10(res))+1;
+	else  nn=static_cast<int>(log10(res));
 	fract_res=res*std::pow(10.,-nn);
 	if (fract_res<0.1) fract_res=0.1;
 	if (fract_res>=1.0) {
@@ -82,7 +82,7 @@ namespace cadna{
 	*t++=48+nres;
 	fract_res=10.0*fract_res-nres;
       }
-      tmp = (int)(fract_res*10.0);
+      tmp =static_cast<int>(fract_res*10.0);
       nres = tmp < 9 ? tmp : 9 ;
       *t++=48+nres;
       *t++='E';
@@ -127,8 +127,8 @@ namespace cadna{
 	fract_res=0.0;
       }
       else{
-	if (res>=1.0) nn=(int)log10(res)+1;
-	else  nn= (int)log10(res);
+	if (res>=1.0) nn=static_cast<int>(log10(res))+1;
+	else  nn=static_cast<int>(log10(res));
 	fract_res=res*std::pow(10.,-nn);
 	if (fract_res<0.1) fract_res=0.1;
 	if (fract_res>=1.0) {
@@ -143,7 +143,7 @@ namespace cadna{
 	*t++=48+nres;
 	fract_res=10.0*fract_res-nres;
       }
-      tmp = (int)(fract_res*10.0);
+      tmp =static_cast<int>(fract_res*10.0);
       nres = tmp < 9 ? tmp : 9 ;
       *t++=48+nres;
       *t++='E';
@@ -172,7 +172,7 @@ namespace cadna{
     return s << str(a,ch);
   }
 
-  std::istream& operator >>(std::istream& s, numeric_type<double>& a)
+  std::istream& operator >>(std::istream& s,numeric_type<double>& a)
   {
     double d;
     s >> d;
@@ -181,7 +181,7 @@ namespace cadna{
     return s;
   }
 
-  std::istream& operator >>(std::istream& s, numeric_type<float>& a)
+  std::istream& operator >>(std::istream& s,numeric_type<float>& a)
   {
     float d;
     s >> d;

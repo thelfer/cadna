@@ -2,10 +2,11 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 AM_CXXFLAGS = -O3 -g -Wunused -frounding-math -std=c++11
 
 testdir = $(pkgdatadir)/tests
-test_PROGRAMS = cadna_unit_test   \
-		test1 test2 test3 \
-		test4 test5 test6 \
-		test7 test-complex
+test_PROGRAMS = cadna_unit_test    \
+		test1 test2 test3  \
+		test4 test5 test6  \
+		test7 test-complex \
+		instability
 
 LDADD = -L$(top_builddir)/src/ -lcadna_cxx
 
@@ -18,6 +19,7 @@ test5_SOURCES = test5.cxx
 test6_SOURCES = test6.cxx
 test7_SOURCES = test7.cxx
 test_complex_SOURCES = test-complex.cxx
+instability_SOURCES=instability.cxx
 
 TESTS=$(test_PROGRAMS)
 

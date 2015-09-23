@@ -3,6 +3,7 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS= src include tests cmake
 
 EXTRA_DIST = CMakeLists.txt          \
+	     README.md               \
 	     examples/ex1.c          \
 	     examples/ex1_cad.cc     \
 	     examples/ex2.c          \

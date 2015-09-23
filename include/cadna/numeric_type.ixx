@@ -403,9 +403,9 @@ namespace cadna{
       }
     } else {
       const double ixx=3/xx;
-      const double x0=v.x*ixx-one;
-      const double x1=v.y*ixx-one;
-      const double x2=v.z*ixx-one;
+      const double x0=v.x*double{ixx}-one;
+      const double x1=v.y*double{ixx}-one;
+      const double x2=v.z*double{ixx}-one;
       if ((x0*x0+x1*x1+x2*x2) > cste){
 	v.accuracy=0;
       }

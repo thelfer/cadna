@@ -12,9 +12,13 @@
 #include "cadna/global.hxx"
 
 namespace cadna{
-  
+
+  /*!
+   * \brief function called when an instability is detected
+   * \param[in] id : instability id
+   */
   CADNA_VISIBILITY_EXPORT void
-  instability(const instability_id);
+  instability(const instability_id) noexcept;
 
 } // end of namespace cadna
 

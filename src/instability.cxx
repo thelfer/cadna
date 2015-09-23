@@ -30,15 +30,16 @@ namespace cadna{
     }
     throw(std::runtime_error("cadna::get_counter : internal "
 			     "error, unsupported instability id"));
-  };
+  }
   
   // call_instability_handlers is implemented in instability_handler
-  void call_instability_handlers(const instability_id);
+  void call_instability_handlers(const instability_id) noexcept;
   
-  void instability(const instability_id id)
+  void instability(const instability_id id) noexcept
   {
     // #pragma message "_cadan_power_tag ?"
     unsigned long& unstab = get_counter(id);
+    call_instability_handlers(id);
 #ifdef _OPENMP
 #pragma omp atomic
 #endif //_OPENMP

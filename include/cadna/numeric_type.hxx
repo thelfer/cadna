@@ -213,9 +213,9 @@ namespace cadna{
   std::ostream& operator<<(std::ostream&, const numeric_type<float>&);
 
   CADNA_VISIBILITY_EXPORT
-  std::istream& operator<<(std::istream&, const numeric_type<double>&);
+  std::istream& operator>>(std::istream&,numeric_type<double>&);
   CADNA_VISIBILITY_EXPORT
-  std::istream& operator<<(std::istream&, const numeric_type<float>&);
+  std::istream& operator>>(std::istream&,numeric_type<float>&);
 
   CADNA_VISIBILITY_EXPORT
   const char* internal_strp(const numeric_type<double>&);

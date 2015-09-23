@@ -35,6 +35,10 @@ namespace cadna{
   CADNA_VISIBILITY_EXPORT void enable(unsigned int);
   CADNA_VISIBILITY_EXPORT void disable(unsigned int);
 
+  /*!
+   * The enum struct contains all the type if instabilities detected
+   * by CADNA
+   */
   enum struct instability_id{
     MATH_INSTABILITY,
     CANCEL_INSTABILITY,
@@ -43,7 +47,10 @@ namespace cadna{
     POWER_INSTABILITY,
     INTRINSIC_INSTABILITY,
     BRANCHING_INSTABILITY
-  };
+  }; // end of enum struct instability_id
+
+  //! a simple alias used for handlers managements
+  using handler_id = unsigned long; 
   
   struct Counter
   {

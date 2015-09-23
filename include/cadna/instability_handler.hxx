@@ -16,9 +16,18 @@ namespace cadna{
 
   //! a simple alias
   using instability_handler = std::function<void(const instability_id)>;
-  
+  /*!
+   * \brief add an instability handler
+   * \return the id associated with the handler
+   */
+  CADNA_VISIBILITY_EXPORT handler_id
+  add_instability_handler(const instability_handler);
+  /*!
+   * \brief remove the specified hander
+   * \param[in] id : handler id
+   */
   CADNA_VISIBILITY_EXPORT void
-  set_instability_handler(const instability_handler);
+  remove_instability_handler(const handler_id);
   
 } // end of namespace cadna
 

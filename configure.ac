@@ -183,7 +183,7 @@ case "$host" in
       echo "configure.ac   *powerpc-ibm-aix*)   "     	
       case "$CXX" in
           g++ )
- 	      CADNA_MATH_FILE=src/cmath_gcc.xx	 
+ 	      CADNA_MATH_FILE=src/cmath_gnu.cxx	 
 	      _asm_file_orig=src/rnd_ppc_aix.s
 	      __cadna_compiler_problem=0
 	      ;;

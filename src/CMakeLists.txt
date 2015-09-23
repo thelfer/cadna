@@ -3,7 +3,6 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
 set(cadna_SOURCES
-  cmath.cxx
   global.cxx
   numeric_type.cxx
   to_string.cxx

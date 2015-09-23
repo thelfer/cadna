@@ -69,10 +69,11 @@ namespace cadna{
   call_std_binary_function(const numeric_type<T1>& x,
 			   const numeric_type<T2>& y) noexcept
   {
-    fesetround(FE_TONEAREST);
+ #pragma message "call_std_binary_function_leftscalar : unimplemented feature"
+    std::fesetround(FE_TONEAREST);
     numeric_type<promote_t<T1,T2>> r{F(x.x,y.x),F(x.y,y.y),F(x.z,y.z)};
     r.accuracy=DIGIT_NOT_COMPUTED;
-    fesetround(FE_UPWARD);
+    std::fesetround(FE_UPWARD);
     return r;
   } // end of call_std_binary_function
 
@@ -82,10 +83,10 @@ namespace cadna{
 				       const T1& y) noexcept
   {
  #pragma message "call_std_binary_function_rightscalar : unimplemented feature"
-    // fesetround(FE_TONEAREST);
+    std::fesetround(FE_TONEAREST);
     numeric_type<T1> r{F(x.x,y),F(x.y,y),F(x.z,y)};
     r.accuracy=DIGIT_NOT_COMPUTED;
-    // fesetround(FE_UPWARD);
+    std::fesetround(FE_UPWARD);
     return r;
   } // end of call_std_binary_function
 
@@ -94,11 +95,10 @@ namespace cadna{
   call_std_binary_function_leftscalar(const T1& x,
 				      const numeric_type<T1>& y) noexcept
   {
- #pragma message "call_std_binary_function_rightscalar : unimplemented feature"
-    // fesetround(FE_TONEAREST);
+    std::fesetround(FE_TONEAREST);
     numeric_type<T1> r{F(x,y.x),F(x,y.y),F(x,y.z)};
     r.accuracy=DIGIT_NOT_COMPUTED;
-    // fesetround(FE_UPWARD);
+    std::fesetround(FE_UPWARD);
     return r;
   } // end of call_std_binary_function
   

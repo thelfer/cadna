@@ -4,8 +4,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include   \
 
 lib_LTLIBRARIES  = libcadna_cxx.la
 
-libcadna_cxx_la_SOURCES= cmath.cxx               \
-                         cmath_specific.cxx      \
+libcadna_cxx_la_SOURCES= cmath_specific.cxx      \
                          global.cxx              \
                          numeric_type.cxx        \
 	                 to_string.cxx           \

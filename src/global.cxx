@@ -6,6 +6,8 @@
  */
 
 #include<fenv.h>
+#include<cstdlib>
+#include<cstring>
 #include<iostream>
 
 #ifdef _OPENMP
@@ -61,6 +63,24 @@ namespace cadna{
 		   const InitialisationStatus status)
   {
     using namespace std;
+    auto set = [&tag](unsigned int& t,
+		      unsigned int& c,
+		      const char * const n,
+		  const unsigned int flag){
+      const auto e = ::getenv(n);
+      if(e!=nullptr){
+	if(::strcmp(e,"DISABLED")==0){
+	  t=0;
+	  c=1;
+	}
+      } else {
+	if (tag & flag)   {
+	  t=0; 
+	  c=1; 
+	}
+      }
+    }; // end of set
+    
     _cancel_value=cancellation;
   
     _max_instability=max_instability;
@@ -90,34 +110,20 @@ namespace cadna{
       config.intrinsic_tag=0; 
       config.math_tag=0; 
     } else {
-      if (tag & CADNA_DIV)   {
-	config.div_tag=0; 
-	config.div_change=1; 
-      }
-      if (tag & CADNA_MUL) {
-	config.mul_tag=0; 
-	config.mul_change=1; 
-      }
-      if (tag & CADNA_POWER) {
-	config.power_tag=0; 
-	config.power_change=1; 
-      }
-      if (tag & CADNA_MATH) {
-	config.math_tag=0; 
-	config.math_change=1; 
-      }
-      if (tag & CADNA_INTRINSIC) {
-	config.intrinsic_tag=0; 
-	config.intrinsic_change=1; 
-      }
-      if (tag & CADNA_CANCEL) {
-	config.cancel_tag=0; 
-	config.cancel_change=1; 
-      }
-      if (tag & CADNA_BRANCHING) {
-	config.branching_tag=0; 
-	config.branching_change=1; 
-      }
+      set(config.div_tag,config.div_change,
+	  "CADNA_DIV",CADNA_DIV);
+      set(config.mul_tag,config.mul_change,
+	  "CADNA_MUL",CADNA_MUL);
+      set(config.power_tag,config.power_change,
+	  "CADNA_POWER",CADNA_POWER);
+      set(config.math_tag,config.math_change,
+	  "CADNA_MATH",CADNA_MATH);
+      set(config.intrinsic_tag,config.intrinsic_change,
+	  "CADNA_INTRINSIC",CADNA_INTRINSIC);
+      set(config.cancel_tag,config.cancel_change,
+	  "CADNA_CANCEL",CADNA_CANCEL);
+      set(config.branching_tag,config.branching_change,
+	  "CADNA_BRANCHING",CADNA_BRANCHING);
     }
 
     if(status==InitialisationStatus::FIRSTCALL){
@@ -241,7 +247,6 @@ namespace cadna{
 	cout << "The results are NOT guaranteed." << endl ;
 	cout << endl;
       }
-    
       if (sum==1){
 	cout << "There is  1 numerical instability" << endl;
       } else{
@@ -264,41 +269,7 @@ namespace cadna{
 	cout <<  this->cancel_count << " " <<  _cancel_err_msg << endl;
     }
     cout << "----------------------------------------------------------------" << endl;
-
   }
-
-
-  //****f* type/enable
-  //    NAME
-  //     enable
-  //
-  //    SYNOPSIS
-  //      void enable(unsigned int tag)
-  //    FUNCTION
-  //      The enable function enables the detection of a kind of
-  //      numerical instability.
-  //    INPUTS
-  //      unsigned int tag (see documentation)
-  //    RESULT
-  //      
-  //    SEE ALSO
-  //        disable(3)
-  //*****
-  //   You can use this space for remarks that should not be included
-  //   in the documentation.
-  //    EXAMPLE
-  //      
-  //  
-  //    NOTES
-  //  
-  //  
-  //    BUGS
-  //  
-  //  
-  //      
-  //      
-  //  /
-
 
   void enable(unsigned int tag)
   {

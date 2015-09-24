@@ -28,27 +28,9 @@
 #include<windows.h>
 #endif
 
-#ifndef COMPILER_FLAGS
-#define COMPILER_FLAGS ""
-#endif
-#ifndef COMPILER_CXXFLAGS
-#define COMPILER_CXXFLAGS ""
-#endif
-#ifndef OPTIMISATION_FLAGS0
-#define OPTIMISATION_FLAGS0 ""
-#endif
-#ifndef OPTIMISATION_FLAGS
-#define OPTIMISATION_FLAGS ""
-#endif
-#ifndef OPTIMISATION_FLAGS2
-#define OPTIMISATION_FLAGS2 ""
-#endif
-#ifndef COMPILER_WARNINGS
-#define COMPILER_WARNINGS ""
-#endif
-
-typedef void (*FuncPtr)(void);
-typedef std::map<std::string,std::pair<FuncPtr,std::string> > CallBacksContainer;
+using FuncPtr = void (*)(void);
+using CallBacksContainer = std::map<std::string,
+				    std::pair<FuncPtr,std::string>> ;
 
 static std::string
 handleSpace(const std::string& p)
@@ -82,19 +64,10 @@ registerCallBack(const std::string&,
 		 const std::string&);
 
 static void
-treatCompilerFlags(void);
+treatCxxflags(void);
 
 static void
 treatWarnings(void);
-
-static void
-treatOFlags0(void);
-
-static void
-treatOFlags(void);
-
-static void
-treatOFlags2(void);
 
 static void
 treatIncludes(void);
@@ -115,13 +88,10 @@ CADNA_NORETURN static void
 treatLicences(void);
 
 static CallBacksContainer callBacksContainer;
-static bool compilerflags   = false;
-static bool oflags0         = false;
-static bool oflags          = false;
-static bool oflags2         = false;
-static bool warnings        = false;
-static bool incs            = false;
-static bool libs            = false;
+static bool cxxflags   = false;
+static bool warnings   = false;
+static bool incs       = false;
+static bool libs       = false;
 
 #if defined _WIN32 || defined _WIN64
 static bool
@@ -230,34 +200,15 @@ registerCallBack(const std::string& key,
 } // end of registerNewCallBack
 
 static void
-treatCompilerFlags(void)
+treatCxxflags(void)
 {
-  compilerflags = true;
-} // end of treatCompilerFlags
+  cxxflags = true;
+} // end of treatCxxflags
 
 static void
 treatWarnings(void){
   warnings = true;
 }
-
-static void
-treatOFlags0(void)
-{
-  oflags0 = true;
-} // end of treatOFlags
-
-static void
-treatOFlags(void)
-{
-  oflags0 = true;
-  oflags  = true;
-} // end of treatOFlags
-
-static void
-treatOFlags2(void)
-{
-  oflags2 = true;
-} // end of treatOFlags2
 
 static void
 treatIncludes(void)
@@ -311,6 +262,17 @@ treatUnknownOption(const std::string& o)
 CADNA_NORETURN static void
 treatLicences(void)
 {
+  std::cout << "Copyright 2015 J.-M. Chesneaux, P. Eberhart, F. Jezequel, J.-L. Lamotte, T. Helfer\n\n"
+    "CADNA is free software: you can redistribute it and/or modify\n"
+    "it under the terms of the GNU Lesser General Public License as published by\n"
+    "the Free Software Foundation, either version 3 of the License, or\n"
+    "(at your option) any later version.\n\n"
+    "CADNA is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU Lesser General Public License for more details.\n\n"
+    "You should have received a copy of the GNU Lesser General Public License\n"
+    "along with CADNA.  If not, see <http://www.gnu.org/licenses/>" << std::endl;
   ::exit(EXIT_SUCCESS);
 } // end of treatLicences
 
@@ -322,18 +284,8 @@ int main(const int argc,
   try{
 #endif /* __CYGWIN__ */
 
-  registerCallBack("--compiler-flags",&treatCompilerFlags,
+  registerCallBack("--cxxflags",&treatCxxflags,
 		   "return cadna recommended compiler flags.");
-  registerCallBack("--oflags0",&treatOFlags0,
-		   "return cadna recommended optimisation flags "
-		   "without architecture specific flags.");
-  registerCallBack("--oflags",&treatOFlags,
-		   "return cadna recommended optimisation flags "
-		   "with architecture specific flags.");
-  registerCallBack("--oflags2",&treatOFlags2,"return some aggressive "
-		   "optimisation flags, possibly at the expense of "
-		   "numerical precision. This shall be added "
-		   "to `--oflags` results.");
   registerCallBack("--warnings",&treatWarnings,
 		   "return cadna recommended warnings.");
   registerCallBack("--includes",&treatIncludes,
@@ -359,24 +311,12 @@ int main(const int argc,
     std::cout << "-L" << libDir() << " -lcadna_cxx ";
   }
 
-  if(compilerflags){
-    std::cout << COMPILER_FLAGS << " " << COMPILER_CXXFLAGS << " ";
-  }
-
-  if(oflags0){
-    std::cout << OPTIMISATION_FLAGS0 << " ";
-  }
-
-  if(oflags){
-    std::cout << OPTIMISATION_FLAGS << " ";
-  }
-
-  if(oflags2){
-    std::cout << OPTIMISATION_FLAGS2 << " ";
+  if(cxxflags){
+    std::cout << CADNA_COMPILER_CXXFLAGS << " ";
   }
 
   if(warnings){
-    std::cout << COMPILER_WARNINGS << " ";
+    std::cout << CADNA_COMPILER_WARNINGS << " ";
   }
 
   std::cout << std::endl;

@@ -21,11 +21,12 @@ cadna_enable_cxx_compiler_flag(CMAKE_CXX_FLAGS    "ipo")
 cadna_enable_cxx_compiler_flag(VISIBILITY_FLAGS "fvisibility=hidden")
 cadna_enable_cxx_compiler_flag(VISIBILITY_FLAGS "fvisibility-inlines-hidden")
 
-set(OPTIMISATION_FLAGS "-DNO_RUNTIME_CHECK_BOUNDS ${OPTIMISATION_FLAGS}")
-
 if((NOT CMAKE_BUILD_TYPE) OR (CMAKE_BUILD_TYPE STREQUAL "Release"))
   set(OPTIMISATION_FLAGS "-O3 -DNDEBUG ${OPTIMISATION_FLAGS}")
 endif((NOT CMAKE_BUILD_TYPE) OR (CMAKE_BUILD_TYPE STREQUAL "Release"))
+
+set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -frounding-math")
+set(CADNA_COMPILER_CXXFLAGS "-frounding-math")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_definitions("-g")

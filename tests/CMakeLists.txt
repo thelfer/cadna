@@ -20,5 +20,10 @@ cadna_test(test4)
 cadna_test(test5)
 cadna_test(test6)
 cadna_test(test7)
-cadna_test(test-complex)
+
+# libc++ is really touchy about complex
+if(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+  cadna_test(test-complex)
+endif(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+
 cadna_test(instability)

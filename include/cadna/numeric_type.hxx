@@ -22,6 +22,7 @@
 #include<limits>
 #include<string>
 #include<stdexcept>
+#include<algorithm>
 #include<type_traits>
 #include<initializer_list>
 

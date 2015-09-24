@@ -41,6 +41,9 @@ if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
     (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
   set(cadna_SOURCES
     cmath_gnu.cxx ${cadna_SOURCES})
+elseif(MSVC)
+  set(cadna_SOURCES
+    cmath_msvc.cxx ${cadna_SOURCES})
 else((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
      (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
   set(cadna_SOURCES

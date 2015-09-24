@@ -16,6 +16,9 @@
 #ifdef __INTEL_COMPILER
 #defined CADNA_ALWAYS_INLINE __forceinline
 #endif
+#ifndef CADNA_ALWAYS_INLINE
+#define CADNA_ALWAYS_INLINE
+#endif
 
 #if __cplusplus >= 201402L
 // This macro is used for non const member, which is supported by

@@ -14,7 +14,7 @@ set(PACKAGE_BUGREPORT "cadna-team@lip6.fr")
 
 # check for the fenv package
 include(CheckIncludeFiles)
-check_include_files(fenvh HAVE_FENV_H)
+check_include_files(fenv.h HAVE_FENV_H)
 
 # compilers options
 include(cmake/modules/compiler.cmake)

@@ -14,7 +14,10 @@
 #endif
 #endif
 #ifdef __INTEL_COMPILER
-#defined CADNA_ALWAYS_INLINE __forceinline
+#define CADNA_INLINE __forceinline inline
+#endif
+#ifndef CADNA_INLINE
+#define CADNA_INLINE inline
 #endif
 #ifndef CADNA_ALWAYS_INLINE
 #define CADNA_ALWAYS_INLINE

@@ -41,70 +41,70 @@
   CADNA_STDMATH_DOUBLE_UNARYFUNCTION_DECL( F ) \
   CADNA_STDMATH_FLOAT_UNARYFUNCTION_DECL( F )
 
-#define CADNA_STDMATH_BINARYFUNCTION_DECL( F )                                    \
-  CADNA_BEGIN_NAMESPACE_STD				                          \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,             \
-                                  const cadna::numeric_type<double>&) noexcept;   \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,             \
-                                  const double) noexcept;                         \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<double> F(const double,                                   \
-                                  const cadna::numeric_type<double>&) noexcept;   \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,             \
-				  const cadna::numeric_type<float>& ) noexcept;   \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<double> F(const cadna::numeric_type<float>& ,             \
-				  const cadna::numeric_type<double>&) noexcept;   \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<float>  F(const cadna::numeric_type<float>& ,             \
-				  const cadna::numeric_type<float>& ) noexcept;   \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<float> F(const cadna::numeric_type<float>&,               \
-                                 const float) noexcept;                           \
-    CADNA_VISIBILITY_EXPORT                                                       \
-    cadna::numeric_type<float> F(const float,                                     \
-                                 const cadna::numeric_type<float>&) noexcept;     \
-    template<typename T1,typename T2>						  \
-    inline typename std::enable_if<(cadna::is_cxx_fundamental_type<T1>::value&&   \
-				    cadna::is_cxx_fundamental_type<T2>::value),   \
-				   cadna::numeric_type<T1>>::type                 \
-    F(const cadna::numeric_type<T1>&,const T2) noexcept;                          \
-    template<typename T1,typename T2>						  \
-    inline typename std::enable_if<(cadna::is_cxx_fundamental_type<T1>::value&&   \
-				    cadna::is_cxx_fundamental_type<T2>::value),   \
-				   cadna::numeric_type<T2>>::type                 \
-    F(const T1,const cadna::numeric_type<T2>&) noexcept;                          \
-  CADNA_END_NAMESPACE_STD		                                          \
-  template<typename T2>						                  \
-  inline typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
-				 cadna::numeric_type<double>>::type               \
-  F(const cadna::numeric_type<double>&,const T2) noexcept;	                  \
-  template<typename T2>						                  \
-  inline typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
-				 cadna::numeric_type<double>>::type               \
-  F(const T2,const cadna::numeric_type<double>&) noexcept;	                  \
-  CADNA_VISIBILITY_EXPORT                                                         \
-  cadna::numeric_type<double> F(const cadna::numeric_type<double>&,	          \
-				const cadna::numeric_type<double>&) noexcept;     \
-  CADNA_VISIBILITY_EXPORT                                                         \
-  cadna::numeric_type<double> F(const cadna::numeric_type<double>&,	          \
-				const cadna::numeric_type<float>&)  noexcept;     \
-  CADNA_VISIBILITY_EXPORT                                                         \
-  cadna::numeric_type<double> F(const cadna::numeric_type<float>& ,	          \
-				const cadna::numeric_type<double>&) noexcept;     \
-  CADNA_VISIBILITY_EXPORT                                                         \
-  cadna::numeric_type<float>  F##f(const cadna::numeric_type<float>&,             \
-				   const cadna::numeric_type<float>&)  noexcept;  \
-  template<typename T2>						                  \
-  inline typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
-				 cadna::numeric_type<float>>::type                \
-  F##f(const cadna::numeric_type<float>&,const T2) noexcept;		          \
-  template<typename T2>						                  \
-  inline typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
-				 cadna::numeric_type<float>>::type                \
+#define CADNA_STDMATH_BINARYFUNCTION_DECL( F )                                          \
+  CADNA_BEGIN_NAMESPACE_STD				                                \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,                   \
+                                  const cadna::numeric_type<double>&) noexcept;         \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,                   \
+                                  const double) noexcept;                               \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<double> F(const double,                                         \
+                                  const cadna::numeric_type<double>&) noexcept;         \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<double> F(const cadna::numeric_type<double>&,                   \
+				  const cadna::numeric_type<float>& ) noexcept;         \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<double> F(const cadna::numeric_type<float>& ,                   \
+				  const cadna::numeric_type<double>&) noexcept;         \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<float>  F(const cadna::numeric_type<float>& ,                   \
+				  const cadna::numeric_type<float>& ) noexcept;         \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<float> F(const cadna::numeric_type<float>&,                     \
+                                 const float) noexcept;                                 \
+    CADNA_VISIBILITY_EXPORT                                                             \
+    cadna::numeric_type<float> F(const float,                                           \
+                                 const cadna::numeric_type<float>&) noexcept;           \
+    template<typename T1,typename T2>						        \
+    CADNA_INLINE typename std::enable_if<(cadna::is_cxx_fundamental_type<T1>::value&&   \
+				          cadna::is_cxx_fundamental_type<T2>::value),   \
+				         cadna::numeric_type<T1>>::type                 \
+    F(const cadna::numeric_type<T1>&,const T2) noexcept;                                \
+    template<typename T1,typename T2>						        \
+    CADNA_INLINE typename std::enable_if<(cadna::is_cxx_fundamental_type<T1>::value&&   \
+				          cadna::is_cxx_fundamental_type<T2>::value),   \
+				         cadna::numeric_type<T2>>::type                 \
+    F(const T1,const cadna::numeric_type<T2>&) noexcept;                                \
+  CADNA_END_NAMESPACE_STD		                                                \
+  template<typename T2>						                        \
+  CADNA_INLINE typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
+				       cadna::numeric_type<double>>::type               \
+  F(const cadna::numeric_type<double>&,const T2) noexcept;	                        \
+  template<typename T2>						                        \
+  CADNA_INLINE typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
+				       cadna::numeric_type<double>>::type               \
+  F(const T2,const cadna::numeric_type<double>&) noexcept;	                        \
+  CADNA_VISIBILITY_EXPORT                                                               \
+  cadna::numeric_type<double> F(const cadna::numeric_type<double>&,	                \
+				const cadna::numeric_type<double>&) noexcept;           \
+  CADNA_VISIBILITY_EXPORT                                                               \
+  cadna::numeric_type<double> F(const cadna::numeric_type<double>&,	                \
+				const cadna::numeric_type<float>&)  noexcept;           \
+  CADNA_VISIBILITY_EXPORT                                                               \
+  cadna::numeric_type<double> F(const cadna::numeric_type<float>& ,	                \
+				const cadna::numeric_type<double>&) noexcept;           \
+  CADNA_VISIBILITY_EXPORT                                                               \
+  cadna::numeric_type<float>  F##f(const cadna::numeric_type<float>&,                   \
+				   const cadna::numeric_type<float>&)  noexcept;        \
+  template<typename T2>						                        \
+  CADNA_INLINE typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
+				 cadna::numeric_type<float>>::type                      \
+  F##f(const cadna::numeric_type<float>&,const T2) noexcept;		                \
+  template<typename T2>						                        \
+  CADNA_INLINE typename std::enable_if<cadna::is_cxx_fundamental_type<T2>::value,       \
+				 cadna::numeric_type<float>>::type                      \
   F##f(const T2,const cadna::numeric_type<float>&) noexcept;
 
 // trigonometric functions

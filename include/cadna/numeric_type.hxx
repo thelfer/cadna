@@ -144,53 +144,53 @@ namespace cadna{
 
   // summation
   template<typename T>
-  inline numeric_type<T> operator++(numeric_type<T>&)                CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&)                CADNA_ALWAYS_INLINE;
   template<typename T>
-  inline numeric_type<T> operator++(numeric_type<T>&,int)             CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&,int)             CADNA_ALWAYS_INLINE;
   template<typename T>
   CADNA_CONSTEXPR numeric_type<T> operator+(const numeric_type<T>&)  CADNA_ALWAYS_INLINE;
   // decrement operators
   template<typename T>
-  inline numeric_type<T> operator--(numeric_type<T>&) CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator--(numeric_type<T>&) CADNA_ALWAYS_INLINE;
   template<typename T>
-  inline numeric_type<T> operator--(numeric_type<T>&,int) CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator--(numeric_type<T>&,int) CADNA_ALWAYS_INLINE;
   template<typename T>
   CADNA_CONSTEXPR numeric_type<T> operator-(const numeric_type<T>&)  CADNA_ALWAYS_INLINE; 
   // += with standard C++ types
   template<typename T,typename T2>
-  inline typename std::enable_if<is_cxx_fundamental_type<T2>::value,
+  CADNA_INLINE typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 				 numeric_type<T>&>::type
   operator+=(numeric_type<T>&,const T2&) CADNA_ALWAYS_INLINE;
   // += with other numeric_type<T>
   template<typename T,typename T2>
-  inline numeric_type<T>&
+  CADNA_INLINE numeric_type<T>&
   operator+=(numeric_type<T>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   // -= with standard C++ types
   template<typename T,typename T2>
-  inline typename std::enable_if<is_cxx_fundamental_type<T2>::value,
+  CADNA_INLINE typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 				 numeric_type<T>&>::type
   operator-=(numeric_type<T>&,const T2&) CADNA_ALWAYS_INLINE;
   // -= with other numeric_type<T>
   template<typename T,typename T2>
-  inline numeric_type<T>&
+  CADNA_INLINE numeric_type<T>&
   operator-=(numeric_type<T>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   // *= with standard C++ types
   template<typename T,typename T2>
-  inline typename std::enable_if<is_cxx_fundamental_type<T2>::value,
+  CADNA_INLINE typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 				 numeric_type<T>&>::type
   operator*=(numeric_type<T>&,const T2&) CADNA_ALWAYS_INLINE;
   // *= with other numeric_type<T>
   template<typename T,typename T2>
-  inline numeric_type<T>&
+  CADNA_INLINE numeric_type<T>&
   operator*=(numeric_type<T>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   // /= with standard C++ types
   template<typename T,typename T2>
-  inline typename std::enable_if<is_cxx_fundamental_type<T2>::value,
+  CADNA_INLINE typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 				 numeric_type<T>&>::type
   operator/=(numeric_type<T>&,const T2&) CADNA_ALWAYS_INLINE;
   // /= with other numeric_type<T>
   template<typename T,typename T2>
-  inline numeric_type<T>&
+  CADNA_INLINE numeric_type<T>&
   operator/=(numeric_type<T>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   
   template<typename T>
@@ -225,143 +225,143 @@ namespace cadna{
   const char* internal_strp(const numeric_type<float>&);
   
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator == (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator == (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator == (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator != (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator != (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator != (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator >= (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator >= (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator >= (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator > (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator > (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator > (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator <= (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator <= (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator <= (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator < (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 bool>::type
   operator < (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline bool
+  CADNA_INLINE bool
   operator < (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T1>>::type
   operator + (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T2>>::type
   operator + (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline numeric_type<promote_t<T1,T2>>
+  CADNA_INLINE numeric_type<promote_t<T1,T2>>
   operator + (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T1>>::type
   operator - (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T2>>::type
   operator - (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline numeric_type<promote_t<T1,T2>>
+  CADNA_INLINE numeric_type<promote_t<T1,T2>>
   operator - (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T1>>::type
   operator * (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T2>>::type
   operator * (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline numeric_type<promote_t<T1,T2>>
+  CADNA_INLINE numeric_type<promote_t<T1,T2>>
   operator * (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T1>>::type
   operator / (const numeric_type<T1>&,const T2&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+  CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				  is_cxx_fundamental_type<T2>::value),
 				 numeric_type<T2>>::type
   operator / (const T1&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
   template<typename T1,typename T2>
-  inline numeric_type<promote_t<T1,T2>>
+  CADNA_INLINE numeric_type<promote_t<T1,T2>>
   operator / (const numeric_type<T1>&,const numeric_type<T2>&) CADNA_ALWAYS_INLINE;
 
 } // end of namespace cadna

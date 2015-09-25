@@ -12,19 +12,30 @@ namespace cadna{
 
   namespace internals{
 
-    inline void bit_flip(float&,const unsigned int)  CADNA_ALWAYS_INLINE;
-    inline void bit_flip(double&,const unsigned int) CADNA_ALWAYS_INLINE;
+    CADNA_INLINE void bit_flip(float&,const unsigned int)  CADNA_ALWAYS_INLINE;
+    CADNA_INLINE void bit_flip(double&,const unsigned int) CADNA_ALWAYS_INLINE;
     
     void bit_flip(float& f,const unsigned int b){
-      *((unsigned int*)&f)^=((unsigned int)b)<<31;
+      union{
+	float * pf;
+	unsigned int* pi;
+      } u;
+      u.pf = &f;
+      *(u.pi)^=b<<31;
     }
     
     void bit_flip(double& d,const unsigned int b){
-      *((unsigned long*)&d)^=((unsigned long)b)<<63;
+      union{
+	double * pd;
+	unsigned long* pi;
+      } u;
+      u.pd = &d;
+      const unsigned long b2 = b;
+      *(u.pi)^=b2<<63;
     }
 
     template<typename T>
-    static inline numeric_type<T>
+    static CADNA_INLINE numeric_type<T>
     numeric_type_incre_operator_common(numeric_type<T>&) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename Operator>
@@ -59,13 +70,13 @@ namespace cadna{
     }
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
 				   void>::type
     plusequal_minusequal_operator(numeric_type<T>&,const T2&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
 				   void>::type
     plusequal_minusequal_operator(numeric_type<T>&,const numeric_type<T2>&,Operator) CADNA_ALWAYS_INLINE;
@@ -140,7 +151,7 @@ namespace cadna{
     } // end of plusequal_minusequal_operator
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
 				   void>::type
     multequal_divequal_operator(numeric_type<T>&,const T2&,Operator) CADNA_ALWAYS_INLINE;
@@ -168,38 +179,38 @@ namespace cadna{
     } // end of multequal_divequal_operator
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<T2>>::type
     plusminus_operator_leftscalar_base(const T&,const numeric_type<T2>&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<T2>>::type
     plusminus_operator_leftscalar(const T&,const numeric_type<T2>&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<T>>::type
     plusminus_operator_rightscalar_base(const numeric_type<T>&,const T&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<T>>::type
     plusminus_operator_rightscalar(const numeric_type<T>&,const T&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<promote_t<T,T2>>>::type
     plusminus_operator_base(const numeric_type<T>&,
 		            const numeric_type<T2>&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T>::value&&
 				    is_cxx_fundamental_type<T2>::value),
     numeric_type<T2>>::type
     plusminus_operator(const T&,const numeric_type<T2>&,Operator) CADNA_ALWAYS_INLINE;
@@ -331,19 +342,19 @@ namespace cadna{
     }
 
     template<typename T1,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				    is_cxx_fundamental_type<T2>::value),
 				   bool>::type
     comparison_operator(const numeric_type<T1>&,const T2&,Operator) CADNA_ALWAYS_INLINE;
 
     template<typename T1,typename T2,typename Operator>
-    inline typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
+    CADNA_INLINE typename std::enable_if<(is_cxx_fundamental_type<T1>::value&&
 				    is_cxx_fundamental_type<T2>::value),
 				   bool>::type
     comparison_operator(const T1&,const numeric_type<T2>&,Operator)  CADNA_ALWAYS_INLINE;
 
     template<typename T1,typename T2,typename Operator>
-    inline bool
+    CADNA_INLINE bool
     comparison_operator(const numeric_type<T1>&,
 			const numeric_type<T2>&,Operator)  CADNA_ALWAYS_INLINE;
 

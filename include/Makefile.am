@@ -7,6 +7,7 @@ nobase_include_HEADERS = cadna.h                       \
 			 cadna/cmath.ixx               \
 			 cadna/numeric_limits.hxx      \
 			 cadna/random.hxx              \
+			 cadna/random.ixx              \
 			 cadna/to_string.hxx           \
 			 cadna/instability.hxx         \
 			 cadna/instability_handler.hxx \

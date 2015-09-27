@@ -8,7 +8,8 @@ set(cadna_SOURCES
   to_string.cxx
   instability.cxx
   instability_handler.cxx
-  logstream.cxx)
+  logstream.cxx
+  backtrace.cxx)
 
 #   setroundingmode.cxx)
 

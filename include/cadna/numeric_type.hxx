@@ -71,12 +71,11 @@ namespace cadna{
     static constexpr const double thresold = 1.e-14;
   };
   
-  struct invalid_initialiser_list_size
+  struct CADNA_VISIBILITY_EXPORT invalid_initialiser_list_size
     : public std::invalid_argument
   {
-    invalid_initialiser_list_size(const size_t)
-      : std::invalid_argument("invalid_initialiser_list_size")
-    {}
+    invalid_initialiser_list_size(const size_t);
+    virtual ~invalid_initialiser_list_size();
   };
     
   template<typename T>

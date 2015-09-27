@@ -7,4 +7,5 @@ EXTRA_DIST = cadna.cmake                   \
 	     intel.cmake                   \
              msvc.cmake                    \
 	     OptimizeForArchitecture.cmake \
-	     CodeCoverage.cmake
+	     CodeCoverage.cmake            \
+	     libunwind.cmake

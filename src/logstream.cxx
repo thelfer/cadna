@@ -6,6 +6,7 @@
  */
 
 #include<ostream>
+#include"cadna/backtrace.hxx"
 #include"cadna/logstream.hxx"
 #include"cadna/instability_handler.hxx"
 
@@ -22,8 +23,23 @@ namespace cadna{
     InstabilityReport(std::ostream& o)
       :log(o)
     {} // end of InstabilityReport
-    void operator()(const instability_id){
-      log << "instability detected\n";
+    void operator()(const instability_id id){
+      const auto b = backtrace();
+      log << "** cadna library : " << to_string(id)
+	  << " instability detected\n";
+      for(const auto& p:b){
+	if(!p.function.empty()){
+	  log << "- " << p.function;
+	  if(!p.library.empty()){
+	    log << " at " << p.library;
+	  }
+	  if(!p.offset.empty()){
+	    log << " (" << p.offset << ")";
+	  }
+	  log << "\n";
+	}
+      }
+      log << "\n";
     }
     std::ostream& log;
   };

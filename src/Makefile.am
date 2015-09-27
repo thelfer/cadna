@@ -11,7 +11,8 @@ libcadna_cxx_la_SOURCES= cmath_specific.cxx      \
 	                 instability.cxx         \
 	                 instability_handler.cxx \
 			 setroundingmode.cxx     \
-			 logstream.cxx
+			 logstream.cxx           \
+			 backtrace.cxx
 
 libcadna_cxx_la_CPPFLAGS = $(AM_CPPFLAGS) -Dcadna_cxx_EXPORTS
 libcadna_cxx_la_CXXFLAGS=-O3 -g -Wunused -frounding-math -std=c++11

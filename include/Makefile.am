@@ -12,6 +12,7 @@ nobase_include_HEADERS = cadna.h                       \
 			 cadna/instability.hxx         \
 			 cadna/instability_handler.hxx \
 			 cadna/rounding.hxx            \
-			 cadna/logstream.hxx
+			 cadna/logstream.hxx           \
+			 cadna/backtrace.hxx
 
 EXTRA_DIST = CMakeLists.txt

@@ -48,10 +48,17 @@ namespace cadna{
     INTRINSIC_INSTABILITY,
     BRANCHING_INSTABILITY
   }; // end of enum struct instability_id
-
+  /*!
+   * \return a string associated with a given instability id.
+   */
+  const char*
+  to_string(const instability_id);  
   //! a simple alias used for handlers managements
   using handler_id = unsigned long; 
-  
+  /*!
+   * a structure gathering the count of the instabilities detected by
+   * type.
+   */
   struct Counter
   {
     unsigned long math_count      = 0u; 

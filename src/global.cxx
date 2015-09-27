@@ -9,6 +9,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<iostream>
+#include<stdexcept>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -22,6 +23,29 @@ namespace cadna{
 #ifndef PACKAGE_STRING
   const char* PACKAGE_STRING = "CADNA";
 #endif
+
+  const char*
+  to_string(const instability_id id){
+    switch(id){
+    case instability_id::MATH_INSTABILITY:
+      return "math";
+    case instability_id::CANCEL_INSTABILITY:
+      return "cancel";
+    case instability_id::DIV_INSTABILITY:
+      return "div";
+    case instability_id::MUL_INSTABILITY:
+      return "mul";
+    case instability_id::POWER_INSTABILITY:
+      return "power";
+    case instability_id::INTRINSIC_INSTABILITY:
+      return "intrinsic";
+    case instability_id::BRANCHING_INSTABILITY:
+      return "brancking";
+    }
+    throw(std::runtime_error("to_string: unsupported "
+			     "instability id"));
+  } // end of to_string
+
   
   //=====================================================
   //   "CADNA_INIT"

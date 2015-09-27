@@ -8,6 +8,8 @@
 #ifndef _LIB_CADNA_NUMERIC_TYPE_IXX_
 #define _LIB_CADNA_NUMERIC_TYPE_IXX_
 
+#include<cstdint>
+
 namespace cadna{
 
   namespace internals{
@@ -18,7 +20,7 @@ namespace cadna{
     void bit_flip(float& f,const unsigned int b){
       union{
 	float * pf;
-	unsigned int* pi;
+	uint32_t* pi;
       } u;
       u.pf = &f;
       *(u.pi)^=b<<31;
@@ -26,8 +28,8 @@ namespace cadna{
     
     void bit_flip(double& d,const unsigned int b){
       union{
-	double * pd;
-	unsigned long* pi;
+	double   * pd;
+	uint64_t * pi;
       } u;
       u.pd = &d;
       const unsigned long b2 = b;
@@ -446,7 +448,12 @@ namespace cadna{
       if (yy<=default_accuracy<T>::thresold){
 	v.accuracy=default_accuracy<T>::value;
       } else {
-	long exp=*((const unsigned long *)&yy);
+	union {
+	  const double   *pd;
+	  const uint64_t *pi;
+	} u;
+	u.pd = &yy;
+	long exp=*(u.pi);
 	exp&=0x7FF0000000000000UL;
 	exp>>=52;
 	exp-=1023;

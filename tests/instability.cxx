@@ -24,5 +24,6 @@ int main(void){
   if(o.str().empty()){
     return EXIT_FAILURE;
   }
+  std::cout << o.str() << std::endl;
   return EXIT_SUCCESS;
 }

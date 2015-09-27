@@ -35,6 +35,13 @@ namespace cadna{
   constexpr const double default_accuracy<double>::thresold;
   constexpr const int    default_accuracy<float>::value;
   constexpr const double default_accuracy<float>::thresold;
+
+  invalid_initialiser_list_size::invalid_initialiser_list_size(const size_t)
+    : std::invalid_argument("invalid_initialiser_list_size")
+  {}
+
+  invalid_initialiser_list_size::~invalid_initialiser_list_size()
+  {}
   
   static char* str(const numeric_type<double>& v,char *s) 
   {

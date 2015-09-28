@@ -308,6 +308,9 @@ int main(const int argc,
   }
 
   if(libs){
+#ifdef CADNA_COMPILER_LDFLAGS
+    std::cout << CADNA_COMPILER_LDFLAGS << " ";
+#endif
     std::cout << "-L" << libDir() << " -lcadna_cxx ";
   }
 

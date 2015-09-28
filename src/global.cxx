@@ -240,7 +240,7 @@ namespace cadna{
       }
 #pragma omp barrier
       if (!rounded_up) {
-	cout << "Implementation of OpenMP incompatible with this version of CADNA" << endl;
+	std::cout << "Implementation of OpenMP incompatible with this version of CADNA" << std::endl;
 	// exit(-1);
       }
     }

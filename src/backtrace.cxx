@@ -7,12 +7,12 @@
 
 #include"cadna/backtrace.hxx"
 
-#ifdef WIN32
+#ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include<WinBase.h>
-#else /* WIN32 */
+#include<windows.h>
+#else /* _WIN32 */
 #if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
 #include<execinfo.h>
 #include<cxxabi.h>
@@ -26,7 +26,7 @@
 #endif
 #endif /* CADNA_HAVE_LIBUNWIND */
 #endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 namespace cadna{
 
@@ -44,67 +44,70 @@ namespace cadna{
       offset(o)
   {}
 
-#ifdef WIN32
+#ifdef _WIN32
   // https://msdn.microsoft.com/en-us/library/windows/desktop/bb204633(v=vs.85).aspx
-#ifdef WIN64
+#ifdef _WIN64
   static std::vector<backtrace_node>
   backtrace_win32(void){
-    typedef USHORT (WINAPI *CaptureStackBackTraceType)(__in ULONG, __in ULONG, __out PVOID*, __out_opt PULONG);
-    auto r = std::vector<backtrace_node>{};
-    CaptureStackBackTraceType func =
-      static_cast<CaptureStackBackTraceType>(GetProcAddress(LoadLibrary(L"kernel32.dll"), "RtlCaptureStackBackTrace"));
-    if(func == nullptr)
-      return {}; // WOE 29.SEP.2010
-    // Quote from Microsoft Documentation:
-    // ## Windows Server 2003 and Windows XP:
-    // ## The sum of the FramesToSkip and FramesToCapture parameters must be less than 63.
-    const int kMaxCallers = 62;
-    void *callers_stack[ kMaxCallers ];
-    auto process = GetCurrentProcess();
-    SymInitialize( process, nullptr, TRUE );
-    const auto frames  = (func)(0,kMaxCallers,callers_stack,nullptr);
-    auto symbol = static_cast<SYMBOL_INFO>(calloc(sizeof(SYMBOL_INFO)+256*sizeof(char),1));
-    if(symbol==nullptr){
-      return {};
-    }
-    try{
-      symbol->MaxNameLen   = 255;
-      symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-      for(unsigned int i = 1;  i < frames;  i++ ){
-	SymFromAddr( process, ( DWORD64 )( callers_stack[ i ] ), 0, symbol );
-	r.emplace_back("",symbol->Name,"0x"+to_string(symbol->Address));
-      }
-    } catch(...){
-      free(symbol);
-      throw();
-    }
-    free(symbol);
-    return r;
+    // typedef USHORT (WINAPI *CaptureStackBackTraceType)(__in ULONG, __in ULONG, __out PVOID*, __out_opt PULONG);
+    // auto r = std::vector<backtrace_node>{};
+    // CaptureStackBackTraceType func =
+    //   static_cast<CaptureStackBackTraceType>(GetProcAddress(LoadLibrary(L"kernel32.dll"), "RtlCaptureStackBackTrace"));
+    // if(func == nullptr)
+    //   return {}; // WOE 29.SEP.2010
+    // // Quote from Microsoft Documentation:
+    // // ## Windows Server 2003 and Windows XP:
+    // // ## The sum of the FramesToSkip and FramesToCapture parameters must be less than 63.
+    // const int kMaxCallers = 62;
+    // void *callers_stack[ kMaxCallers ];
+    // auto process = GetCurrentProcess();
+    // SymInitialize( process, nullptr, TRUE );
+    // const auto frames  = (func)(0,kMaxCallers,callers_stack,nullptr);
+    // auto symbol = static_cast<SYMBOL_INFO*>(calloc(sizeof(SYMBOL_INFO)+256*sizeof(char),1));
+    // if(symbol==nullptr){
+    //   return {};
+    // }
+    // try{
+    //   symbol->MaxNameLen   = 255;
+    //   symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+    //   for(unsigned int i = 1;  i < frames;  i++ ){
+    // 	SymFromAddr( process, ( DWORD64 )( callers_stack[ i ] ), 0, symbol );
+    // 	r.emplace_back("",symbol->Name,"0x"+to_string(symbol->Address));
+    //   }
+    // } catch(...){
+    //   free(symbol);
+    //   throw();
+    // }
+    // free(symbol);
+    // return r;
+    return {};
   } // end of backtrace_win32
-#else /* WIN64 */
+#else /* _WIN64 */
   static std::vector<backtrace_node>
   backtrace_win32(void){
-    auto r = std::vector<backtrace_node>{};
-     void         * stack[ 100 ];
-     auto process = GetCurrentProcess();
-     SymInitialize( process,nullptr,TRUE);
-     auto frames = CaptureStackBackTrace(0,100,stack,nullptr);
-     auto symbol = static_cast<SYMBOL_INFO>(calloc(sizeof(SYMBOL_INFO)+256*sizeof(char),1));
-     symbol->MaxNameLen   = 255;
-     symbol->SizeOfStruct = sizeof( SYMBOL_INFO );
-     try{
-       for(unsigned int i = 1; i < frames; i++){
-	 SymFromAddr(process,static_cast<DWORD64>(stack[i]),0,symbol);
-	 r.emplace_back("",symbol->Name,"0x"+to_string(symbol->Address));
-       }
-     } catch(...){
-       free(symbol);
-       throw;
-     }
-     free(symbol);
+    // auto r = std::vector<backtrace_node>{};
+    // void         * stack[ 100 ];
+    // auto process = GetCurrentProcess();
+    // SymInitialize( process,nullptr,TRUE);
+    // auto frames = CaptureStackBackTrace(0,100,stack,nullptr);
+    // auto symbol = static_cast<SYMBOL_INFO>(calloc(sizeof(SYMBOL_INFO)+256*sizeof(char),1));
+    // symbol->MaxNameLen   = 255;
+    // symbol->SizeOfStruct = sizeof( SYMBOL_INFO );
+    // try{
+    //   for(unsigned int i = 1; i < frames; i++){
+    // 	SymFromAddr(process,static_cast<DWORD64>(stack[i]),0,symbol);
+    // 	r.emplace_back("",symbol->Name,"0x"+to_string(symbol->Address));
+    //   }
+    // } catch(...){
+    //   free(symbol);
+    //   throw;
+    // }
+    // free(symbol);
+    // return r;
+    return {};
   } // end of backtrace_win32
-#endif /* WIN64 */
-#else /* WIN32 */
+#endif /* _WIN64 */
+#else /* _WIN32 */
 #if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
   /*!
    * \return the backtrace using the libstdc++ bactrace function
@@ -214,13 +217,13 @@ namespace cadna{
     return r;
   } // end of backtrace_unwind
 #endif /* CADNA_HAVE_LIBUNWIND */
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
   std::vector<backtrace_node>
   backtrace(void){
-#ifdef WIN32
+#ifdef _WIN32
     return backtrace_win32();
-#else /* WIN32 */
+#else /* _WIN32 */
 #if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
     return backtrace_libstdcxx();
 #elif (defined CADNA_HAVE_LIBUNWIND)
@@ -228,7 +231,7 @@ namespace cadna{
 #else /* default (do nothing) */
     return {};
 #endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
-#endif /* WIN32 */
+#endif /* _WIN32 */
   } // end of backtrace
 
 } // end of namespace cadna

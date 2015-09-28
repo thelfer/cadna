@@ -54,11 +54,6 @@ if(CMAKE_HOST_WIN32 OR CYGWIN)
   endif(CMAKE_CONFIGURATION_TYPES)
 endif(CMAKE_HOST_WIN32 OR CYGWIN)
 
-# looking for libunwind
-if(NOT WIN32)
-  include(cmake/modules/libunwind.cmake)
-endif(NOT WIN32)
-
 add_subdirectory(include) 
 add_subdirectory(src)
 add_subdirectory(cadna-config)

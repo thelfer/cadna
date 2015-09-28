@@ -1,18 +1,32 @@
 /*!
  * \file   backtrace.cxx
- * \brief    
+ * \brief
  * \author THOMAS HELFER
  * \date   27 sept. 2015
  */
 
 #include"cadna/backtrace.hxx"
 
-#ifdef CADNA_HAVE_LIBUNWIND
-#elif (defined __GNUC__) && (!defined __INTEL_COMPILER)
+#ifdef WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include<WinBase.h>
+#else /* WIN32 */
+#if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
 #include<execinfo.h>
 #include<cxxabi.h>
 #include<memory>
+#else /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
+#ifdef CADNA_HAVE_LIBUNWIND
+#define UNW_LOCAL_ONLY
+#include <libunwind.h>
+#ifdef __clang__
+#include<cxxabi.h>
+#endif
 #endif /* CADNA_HAVE_LIBUNWIND */
+#endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
+#endif /* WIN32 */
 
 namespace cadna{
 
@@ -29,7 +43,7 @@ namespace cadna{
       function(f),
       offset(o)
   {}
-  
+
 #ifdef WIN32
   // https://msdn.microsoft.com/en-us/library/windows/desktop/bb204633(v=vs.85).aspx
 #ifdef WIN64
@@ -42,9 +56,9 @@ namespace cadna{
     if(func == nullptr)
       return {}; // WOE 29.SEP.2010
     // Quote from Microsoft Documentation:
-    // ## Windows Server 2003 and Windows XP:  
+    // ## Windows Server 2003 and Windows XP:
     // ## The sum of the FramesToSkip and FramesToCapture parameters must be less than 63.
-    const int kMaxCallers = 62; 
+    const int kMaxCallers = 62;
     void *callers_stack[ kMaxCallers ];
     auto process = GetCurrentProcess();
     SymInitialize( process, nullptr, TRUE );
@@ -89,37 +103,9 @@ namespace cadna{
      }
      free(symbol);
   } // end of backtrace_win32
-#endif /* WIN32 */
-
-#ifdef CADNA_HAVE_LIBUNWIND
-  /*!
-   * \return the backtrace using libunwind
-   * \see https://gist.github.com/banthar/1343977
-   */
-  static std::vector<backtrace_node>
-  backtrace_unwind(void){
-    constexpr const size_t ns = 128;
-    auto r = std::vector<backtrace_node>{};
-    auto n = std::vector<char>{ns};
-    unw_context_t uc;
-    unw_getcontext(&uc);
-    unw_cursor_t cursor;
-    unw_init_local(&cursor, &uc);
-    int skip = 1;
-    while(unw_step(&cursor)>0){
-      unw_word_t offset;
-      if(skip<=0){
-	if(unw_get_proc_name(&cursor,n,ns,&offset)==0){
-	  r.emplace_back("",&n[0],"");
-	} else {
-	  r.emplace_back("","<unknown function name>","");
-	}
-      }
-      skip--;
-    }
-    return r;
-  } // end of backtrace_unwind
-#elif (defined __GNUC__) && (!defined __INTEL_COMPILER)
+#endif /* WIN64 */
+#else /* WIN32 */
+#if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
   /*!
    * \return the backtrace using the libstdc++ bactrace function
    * \see https://panthema.net/2008/0901-stacktrace-demangled/
@@ -193,23 +179,56 @@ namespace cadna{
     std::free(funcname);
     return r;
   } // end of backtrace_libstdcxx
+#elif (defined CADNA_HAVE_LIBUNWIND)
+  /*!
+   * \return the backtrace using libunwind
+   * \see https://gist.github.com/banthar/1343977
+   */
+  static std::vector<backtrace_node>
+  backtrace_unwind(void){
+    constexpr const size_t ns = 128;
+    auto r = std::vector<backtrace_node>{};
+    auto n = std::vector<char>{};
+    n.resize(ns);
+    unw_context_t uc;
+    unw_getcontext(&uc);
+    unw_cursor_t cursor;
+    unw_init_local(&cursor, &uc);
+    int skip = 1;
+    while(unw_step(&cursor)>0){
+      unw_word_t offset;
+      if(skip<=0){
+	if(unw_get_proc_name(&cursor,&n[0],ns,&offset)==0){
+#ifdef __clang__
+	  // TODO: call cxx abi to demangle the name
+	  r.emplace_back("",&n[0],"");
+#else
+	  r.emplace_back("",&n[0],"");
+#endif
+	} else {
+	  r.emplace_back("","<unknown function name>","");
+	}
+      }
+      skip--;
+    }
+    return r;
+  } // end of backtrace_unwind
 #endif /* CADNA_HAVE_LIBUNWIND */
-  
+#endif /* WIN32 */
+
   std::vector<backtrace_node>
   backtrace(void){
 #ifdef WIN32
     return backtrace_win32();
-#else /* WIN32 */ 
-#ifdef CADNA_HAVE_LIBUNWIND
-    return backtrace_unwind();
-#else /* CADNA_HAVE_LIBUNWIND */
-#if (defined __GNUC__) && (!defined __INTEL_COMPILER)
+#else /* WIN32 */
+#if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
     return backtrace_libstdcxx();
-#else /* default (do nothing= */
+#elif (defined CADNA_HAVE_LIBUNWIND)
+    return backtrace_unwind();
+#else /* default (do nothing) */
     return {};
-#endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) */
-#endif /* CADNA_HAVE_LIBUNWIND */
+#endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
 #endif /* WIN32 */
   } // end of backtrace
-  
+
 } // end of namespace cadna

@@ -1,7 +1,10 @@
+if(CADNA_LIBUNWIND_FOUND)
+  include_directories("${CADNA_LIBUNWIND_INCLUDE_DIR}")
+endif(CADNA_LIBUNWIND_FOUND)
 include_directories("${PROJECT_BINARY_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/src")
-
+  
 set(cadna_SOURCES
   global.cxx
   numeric_type.cxx
@@ -54,3 +57,6 @@ endif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
 
 cadna_library(cadna_cxx
   ${cadna_SOURCES})
+if(CADNA_LIBUNWIND_FOUND)
+  target_link_libraries(cadna_cxx ${CADNA_LIBUNWIND_LIBRARIES})
+endif(CADNA_LIBUNWIND_FOUND)

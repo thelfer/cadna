@@ -31,5 +31,10 @@ if(${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 3.4)
   message(FATAL_ERROR "CADNA C++11 support is only available for clang version >= 3.4")
 endif(${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 3.4)
 set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -std=c++11")
-set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -frounding-math")
-set(CADNA_COMPILER_CXXFLAGS "-frounding-math")
+# set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -frounding-math")
+# set(CADNA_COMPILER_CXXFLAGS "-frounding-math")
+
+# looking for libunwind
+if(NOT WIN32)
+  include(cmake/modules/libunwind.cmake)
+endif(NOT WIN32)

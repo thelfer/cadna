@@ -21,7 +21,7 @@
 namespace cadna{
 
 #ifndef PACKAGE_STRING
-  const char* PACKAGE_STRING = "CADNA";
+  static const char* PACKAGE_STRING = "CADNA";
 #endif
 
   const char*
@@ -69,13 +69,13 @@ namespace cadna{
   int          _random_counter;
   unsigned int _recurrence;
 
-  const char* _div_err_msg       = "UNSTABLE DIVISION(S)";
-  const char* _mul_err_msg       = "UNSTABLE MULTIPLICATION(S)";
-  const char* _power_err_msg     = "UNSTABLE POWER FUNCTION(S)";
-  const char* _branching_err_msg = "UNSTABLE BRANCHING(S)";
-  const char* _cancel_err_msg    = "LOSS(ES) OF ACCURACY DUE TO CANCELLATION(S)";
-  const char* _intrinsic_err_msg = "UNSTABLE INTRINSIC FUNCTION(S)";
-  const char* _math_err_msg      = "UNSTABLE MATHEMATICAL FUNCTION(S)";
+  static const char* _div_err_msg       = "UNSTABLE DIVISION(S)";
+  static const char* _mul_err_msg       = "UNSTABLE MULTIPLICATION(S)";
+  static const char* _power_err_msg     = "UNSTABLE POWER FUNCTION(S)";
+  static const char* _branching_err_msg = "UNSTABLE BRANCHING(S)";
+  static const char* _cancel_err_msg    = "LOSS(ES) OF ACCURACY DUE TO CANCELLATION(S)";
+  static const char* _intrinsic_err_msg = "UNSTABLE INTRINSIC FUNCTION(S)";
+  static const char* _math_err_msg      = "UNSTABLE MATHEMATICAL FUNCTION(S)";
 
   enum struct InitialisationStatus{
     FIRSTCALL,

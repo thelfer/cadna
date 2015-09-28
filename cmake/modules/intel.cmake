@@ -31,3 +31,8 @@ set(CADNA_COMPILER_CXXFLAGS "-frounding-math")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_definitions("-g")
 endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+# looking for libunwind
+if(NOT WIN32)
+  include(cmake/modules/libunwind.cmake)
+endif(NOT WIN32)

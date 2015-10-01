@@ -12,7 +12,6 @@ macro(cadna_test test_arg)
   target_link_libraries(${test_arg} cadna_cxx)
 endmacro(cadna_test)
 
-cadna_test(cadna_unit_test)
 cadna_test(test1)
 cadna_test(test2)
 cadna_test(test3)
@@ -20,6 +19,9 @@ cadna_test(test4)
 cadna_test(test5)
 cadna_test(test6)
 cadna_test(test7)
+cadna_test(test8)
+cadna_test(test-cmath)
+cadna_test(test-numeric-type)
 
 # libc++ is really touchy about complex
 if(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))

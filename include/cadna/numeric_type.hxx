@@ -49,10 +49,17 @@ namespace cadna{
 
   template<typename T1,typename T2>
   using promote_t = typename promote<T1,T2>::type;
+
+  template<typename T>
+  using is_cxx_floating_point_type =
+    std::integral_constant<bool,(std::is_same<T,float>::value||
+				 std::is_same<T,double>::value||
+				 std::is_same<T,long double>::value)>;
   
   template<typename T>
   using is_cxx_fundamental_type =
-    std::integral_constant<bool,std::is_integral<T>::value || std::is_floating_point<T>::value>;
+    std::integral_constant<bool,(std::is_integral<T>::value||
+				 is_cxx_floating_point_type<T>::value)>;
   
   template<typename T>
   struct default_accuracy;
@@ -81,7 +88,7 @@ namespace cadna{
   template<typename T>
   struct numeric_type
   {
-    static_assert(std::is_floating_point<T>::value,
+    static_assert(is_cxx_floating_point_type<T>::value,
 		  "numeric_type : template parameter "
 		  "must a standard floating point type");
     using value_type = T;
@@ -369,5 +376,6 @@ namespace cadna{
 #include "numeric_limits.hxx"
 #include "cmath.hxx"
 #include "to_string.hxx"
+#include "type_traits.hxx"
 
 #endif /* _LIB_NUMERIC_TYPE_HXX_ */

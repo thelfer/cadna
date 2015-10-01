@@ -17,6 +17,7 @@
 #include<iostream>
 #include<algorithm>
 #include<stdexcept>
+#include<functional>
 
 #include"cadna/macros.hxx"
 #include"cadna-config.hxx"
@@ -28,9 +29,8 @@
 #include<windows.h>
 #endif
 
-using FuncPtr = void (*)(void);
 using CallBacksContainer = std::map<std::string,
-				    std::pair<FuncPtr,std::string>> ;
+				    std::pair<std::function<void(void)>,std::string>> ;
 
 static std::string
 handleSpace(const std::string& p)
@@ -60,20 +60,8 @@ includeDir(void);
 
 static void
 registerCallBack(const std::string&,
-		 const FuncPtr&,
+		 const std::function<void(void)>,
 		 const std::string&);
-
-static void
-treatCxxflags(void);
-
-static void
-treatWarnings(void);
-
-static void
-treatIncludes(void);
-
-static void
-treatLibs(void);
 
 static void
 listOptions(std::ostream&);
@@ -88,10 +76,6 @@ CADNA_NORETURN static void
 treatLicences(void);
 
 static CallBacksContainer callBacksContainer;
-static bool cxxflags   = false;
-static bool warnings   = false;
-static bool incs       = false;
-static bool libs       = false;
 
 #if defined _WIN32 || defined _WIN64
 static bool
@@ -193,35 +177,11 @@ includeDir(void)
 
 static void
 registerCallBack(const std::string& key,
-		 const FuncPtr& f,
+		 const std::function<void(void)> f,
 		 const std::string& description)
 {
   callBacksContainer.insert({key,std::make_pair(f,description)});
 } // end of registerNewCallBack
-
-static void
-treatCxxflags(void)
-{
-  cxxflags = true;
-} // end of treatCxxflags
-
-static void
-treatWarnings(void){
-  warnings = true;
-}
-
-static void
-treatIncludes(void)
-{
-  incs = true;
-} // end of treatIncludes
-
-
-static void
-treatLibs(void)
-{
-  libs = true;
-} // end of treatLibs
 
 static void
 listOptions(std::ostream& os)
@@ -280,17 +240,25 @@ treatLicences(void)
 int main(const int argc,
 	 const char *const *const argv)
 {
+  bool cxxflags   = false;
+  bool ldflags   = false;
+  bool warnings   = false;
+  bool incs       = false;
+  bool libs       = false;
+  
 #if defined _WIN32 || defined _WIN64 ||defined __CYGWIN__
   try{
 #endif /* __CYGWIN__ */
 
-  registerCallBack("--cxxflags",&treatCxxflags,
+  registerCallBack("--cxxflags",[&cxxflags](){cxxflags=true;},
 		   "return cadna recommended compiler flags.");
-  registerCallBack("--warnings",&treatWarnings,
+  registerCallBack("--ldflags",[&ldflags](){ldflags=true;},
+		   "return cadna recommended compiler linker flags.");
+  registerCallBack("--warnings",[&warnings](){warnings=true;},
 		   "return cadna recommended warnings.");
-  registerCallBack("--includes",&treatIncludes,
+  registerCallBack("--includes",[&incs](){incs=true;},
 		   "return cadna include path.");
-  registerCallBack("--libs",&treatLibs,"return linking flags.");
+  registerCallBack("--libs",[&libs](){libs=true;},"return linking flags.");
   registerCallBack("--help",&treatHelp,"print this help message.");
   registerCallBack("--version",&treatVersion,
 		   "print cadna version.");
@@ -300,7 +268,7 @@ int main(const int argc,
     if(p==callBacksContainer.end()){
       treatUnknownOption(*p2);
     }
-    (*(p->second.first))();
+    (p->second.first)();
   }
 
   if(incs){
@@ -308,12 +276,15 @@ int main(const int argc,
   }
 
   if(libs){
+    std::cout << "-L" << libDir() << " ";
+  }
+
+  if(ldflags){
 #ifdef CADNA_COMPILER_LDFLAGS
     std::cout << CADNA_COMPILER_LDFLAGS << " ";
 #endif
-    std::cout << "-L" << libDir() << " -lcadna_cxx ";
   }
-
+  
   if(cxxflags){
     std::cout << CADNA_COMPILER_CXXFLAGS << " ";
   }

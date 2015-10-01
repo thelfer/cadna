@@ -8,6 +8,13 @@
 #ifndef _LIB_CADNA_CONFIG_HXX_
 #define _LIB_CADNA_CONFIG_HXX_
 
+// October 2015 : a simple trick: including this header has not effect
+// in c++ other than defining some macros specific to the standard
+// library implementation: here we want to detect if we use libc++
+// \see the definition of the CADNA_BEGIN_NAMESPACE_STD and
+// CADNA_END_NAMESPACE_STD macros
+#include<ciso646>
+
 #ifdef __GNUC__
 #ifndef __INTEL_COMPILER
 #define CADNA_ALWAYS_INLINE __attribute__((always_inline))
@@ -80,6 +87,17 @@
 #  endif
 #else
 #  define CADNA_VISIBILITY_EXPORT CADNA_EXPORT
-#endif /* LIB_CADNA_CONFIG_HXX_ */
+#endif
+
+#if (defined _LIBCPP_VERSION)
+#define CADNA_BEGIN_NAMESPACE_STD _LIBCPP_BEGIN_NAMESPACE_STD
+#else
+#define CADNA_BEGIN_NAMESPACE_STD namespace std{
+#endif
+#if (defined _LIBCPP_VERSION)
+#define CADNA_END_NAMESPACE_STD _LIBCPP_END_NAMESPACE_STD
+#else
+#define CADNA_END_NAMESPACE_STD }
+#endif
 
 #endif /* _LIB_CADNA_CONFIG_HXX_ */

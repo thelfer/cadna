@@ -151,21 +151,21 @@ namespace cadna{
     }
 
     if(status==InitialisationStatus::FIRSTCALL){
-      cout << "----------------------------------------------------------------" << endl;
-      cout << PACKAGE_STRING << " software --- University P. et M. Curie --- LIP6" << endl;
-      cout << "----------------------------------------------------------------" << endl;
+      cout << "----------------------------------------------------------------\n"
+	   << PACKAGE_STRING << " software --- University P. et M. Curie --- LIP6\n"
+	   << "----------------------------------------------------------------\n";
     } else {
-      cout << "----------------------------------------------------------------" << endl;
+      cout << "----------------------------------------------------------------\n";
       if (config.div_tag & config.mul_tag & config.power_tag){
-	cout << "Self-validation detection: ON" << endl;
+	cout << "Self-validation detection: ON\n";
       } else {
-	cout << "Self-validation detection: OFF" << endl;
+	cout << "Self-validation detection: OFF\n";
       }
-      cout << "Mathematical instabilities detection: " <<  (config.math_tag ? "ON": "OFF") << endl;
-      cout << "Branching instabilities detection: " << (config.branching_tag ? "ON": "OFF") << endl;
-      cout << "Intrinsic instabilities detection: " << (config.intrinsic_tag ? "ON": "OFF") << endl;
-      cout << "Cancellation instabilities detection: " << (config.cancel_tag ? "ON": "OFF") << endl;
-      cout << "----------------------------------------------------------------" << endl;
+      cout << "Mathematical instabilities detection: " <<  (config.math_tag ? "ON": "OFF") << '\n'
+	   << "Branching instabilities detection: " << (config.branching_tag ? "ON": "OFF") << '\n'
+	   << "Intrinsic instabilities detection: " << (config.intrinsic_tag ? "ON": "OFF") << '\n'
+	   << "Cancellation instabilities detection: " << (config.cancel_tag ? "ON": "OFF") << '\n'
+	   << "----------------------------------------------------------------\n";
     }
 #ifdef _OPENMP
 #pragma omp parallel shared(seed)
@@ -201,20 +201,20 @@ namespace cadna{
     // call the init function with default values
     init(-1,0,51,_cancel_value,InitialisationStatus::FIRSTCALL);
     // unsigned int rounding_mode=fegetround();
-    // cout << rounding_mode << endl;
+    // cout << rounding_mode << '\n';
     fesetround(FE_UPWARD);
     // rounding_mode=fegetround();
-    // cout << rounding_mode << endl;
+    // cout << rounding_mode << '\n';
 #ifdef _OPENMP
     unsigned int rounded_up;
 #pragma omp parallel reduction(&&:rounded_up)
     {
       // unsigned int local_rounding_mode=fegetround();
-      // cout << local_rounding_mode << endl;
+      // cout << local_rounding_mode << '\n';
       // double test = 1.;
       // rounded_up = 1;
       // test += 1.e-20;
-      // cout << test << endl;
+      // cout << test << '\n';
       // if (test != 1.)
       //   rounded_up = 0;
       rounded_up = (fegetround() == FE_UPWARD);
@@ -229,18 +229,18 @@ namespace cadna{
 #pragma omp parallel reduction(&&:rounded_up)
       {
 	// unsigned int local_rounding_mode=fegetround();
-	// cout << local_rounding_mode << endl;
+	// cout << local_rounding_mode << '\n';
 	// double test = 1.;
 	// rounded_up = 1;
 	// test += 1.e-20;
-	// cout << test << endl;
+	// cout << test << '\n';
 	// // if (test != 1.)
 	// //   rounded_up = 0;
 	rounded_up = (fegetround() == FE_UPWARD);
       }
 #pragma omp barrier
       if (!rounded_up) {
-	cout << "Implementation of OpenMP incompatible with this version of CADNA" << endl;
+	cout << "Implementation of OpenMP incompatible with this version of CADNA\n";
 	// exit(-1);
       }
     }
@@ -252,57 +252,57 @@ namespace cadna{
     using namespace std;
     fesetround(FE_TONEAREST);
   
-    cout << "----------------------------------------------------------------" << endl;
-    cout << PACKAGE_STRING << " software --- University P. et M. Curie --- LIP6" << endl;
+    cout << "----------------------------------------------------------------\n";
+    cout << PACKAGE_STRING << " software --- University P. et M. Curie --- LIP6\n";
     unsigned long long sum= this->div_count+this->mul_count+this->math_count+this->power_count +
       this->intrinsic_count+this->cancel_count+this->branching_count;
   
     if (!sum){
-      cout << "No instability detected" << endl;
+      cout << "No instability detected\n";
     } else {
       if (this->div_count+this->mul_count+this->power_count){
-	cout << endl;
-	cout <<  "CRITICAL WARNING: the self-validation detects major problem(s)." << endl;
-	cout << "The results are NOT guaranteed." << endl ;
-	cout << endl;
+	cout << '\n'
+	     <<  "CRITICAL WARNING: the self-validation detects major problem(s).\n"
+	     << "The results are NOT guaranteed.\n" 
+	     << '\n';
       } else if (config.div_change || config.mul_change || config.power_change){
-	cout << endl;
-	cout << "BE CAREFUL: the self-validation has been deactivated." << endl;
-	cout << "The results are NOT guaranteed." << endl ;
-	cout << endl;
+	cout << '\n'
+	     << "BE CAREFUL: the self-validation has been deactivated.\n"
+	     << "The results are NOT guaranteed.\n" 
+	     << '\n';
       }
       if (sum==1){
-	cout << "There is  1 numerical instability" << endl;
+	cout << "There is  1 numerical instability\n";
       } else{
-	cout << "There are " << sum << " numerical instabilities" << endl;
+	cout << "There are " << sum << " numerical instabilities\n";
       }
     
       if  (config.div_tag && this->div_count) 
-	cout <<  this->div_count << " " <<  _div_err_msg << endl;
+	cout <<  this->div_count << " " <<  _div_err_msg << '\n';
       if  (config.mul_tag && this->mul_count) 
-	cout <<  this->mul_count << " " <<  _mul_err_msg << endl;
+	cout <<  this->mul_count << " " <<  _mul_err_msg << '\n';
       if  (config.power_tag && this->power_count) 
-	cout <<  this->power_count << " " <<  _power_err_msg << endl;
+	cout <<  this->power_count << " " <<  _power_err_msg << '\n';
       if  (config.branching_tag && this->branching_count) 
-	cout <<  this->branching_count << " " <<  _branching_err_msg << endl;
+	cout <<  this->branching_count << " " <<  _branching_err_msg << '\n';
       if (config.intrinsic_tag && this->intrinsic_count) 
-	cout <<  this->intrinsic_count << " " <<  _intrinsic_err_msg << endl;
+	cout <<  this->intrinsic_count << " " <<  _intrinsic_err_msg << '\n';
       if  (config.math_tag && this->math_count) 
-	cout <<  this->math_count << " " <<  _math_err_msg << endl;
+	cout <<  this->math_count << " " <<  _math_err_msg << '\n';
       if  (config.cancel_tag && this->cancel_count) 
-	cout <<  this->cancel_count << " " <<  _cancel_err_msg << endl;
+	cout <<  this->cancel_count << " " <<  _cancel_err_msg << '\n';
     }
-    cout << "----------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------\n";
   }
 
   void enable(unsigned int tag)
   {
     using namespace std;
     if (_max_instability==-2) {
-      cerr << "-----------------------------------------------------------" << endl;
-      cerr << " CADNA: The maximum number of instabilities has been reached" << endl;
-      cerr << " The select_instability is not performed"    << endl;
-      cerr << "-----------------------------------------------------------" << endl;
+      cerr << "-----------------------------------------------------------\n"
+	   << " CADNA: The maximum number of instabilities has been reached\n"
+	   << " The select_instability is not performed"    << '\n'
+	   << "-----------------------------------------------------------\n";
     }
   
     if (tag & CADNA_DIV)  { 

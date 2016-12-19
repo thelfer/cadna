@@ -1,5 +1,5 @@
 /*!
- * \file   cadna_unit_test.cxx
+ * \file   test-numeric-type.cxx
  * \brief    
  * \author THOMAS HELFER
  * \date   14 sept. 2015

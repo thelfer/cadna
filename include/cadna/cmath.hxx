@@ -9,17 +9,8 @@
 #define _LIB_CADNA_CMATH_HXX_
 
 #include<cmath>
-
-#if (defined _LIBCPP_VERSION)
-#define CADNA_BEGIN_NAMESPACE_STD _LIBCPP_BEGIN_NAMESPACE_STD
-#else
-#define CADNA_BEGIN_NAMESPACE_STD namespace std{
-#endif
-#if (defined _LIBCPP_VERSION)
-#define CADNA_END_NAMESPACE_STD _LIBCPP_END_NAMESPACE_STD
-#else
-#define CADNA_END_NAMESPACE_STD }
-#endif
+#include"cadna/macros.hxx"
+#include"cadna/numeric_type.hxx"
 
 #define CADNA_STDMATH_DOUBLE_UNARYFUNCTION_DECL( F )                            \
   CADNA_BEGIN_NAMESPACE_STD				                        \

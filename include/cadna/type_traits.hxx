@@ -21,8 +21,35 @@ CADNA_BEGIN_NAMESPACE_STD
   template<typename T>
   struct is_floating_point<cadna::numeric_type<T>>
     : std::conditional<cadna::is_cxx_floating_point_type<T>::value,
-		       std::true_type,std::false_type>
+		       std::true_type,std::false_type>::type
   {}; // end of struct is_floating_point<cadna::numeric_type<T>>
+  /*!
+   * \brief partial specialisation of the std::is_arithmetic
+   * metafunction
+   */
+  template<typename T>
+  struct is_arithmetic<cadna::numeric_type<T>>
+    : std::conditional<cadna::is_cxx_floating_point_type<T>::value,
+		       std::true_type,std::false_type>::type
+  {}; // end of struct is_arithmetic<cadna::numeric_type<T>>
+  /*!
+   * \brief partial specialisation of the std::is_scalar
+   * metafunction
+   */
+  template<typename T>
+  struct is_scalar<cadna::numeric_type<T>>
+    : std::conditional<cadna::is_cxx_floating_point_type<T>::value,
+		       std::true_type,std::false_type>::type
+  {}; // end of struct is_scalar<cadna::numeric_type<T>>
+  /*!
+   * \brief partial specialisation of the std::is_signed
+   * metafunction
+   */
+  template<typename T>
+  struct is_signed<cadna::numeric_type<T>>
+    : std::conditional<cadna::is_cxx_floating_point_type<T>::value,
+		       std::true_type,std::false_type>::type
+  {}; // end of struct is_signed<cadna::numeric_type<T>>
 
 CADNA_END_NAMESPACE_STD
 

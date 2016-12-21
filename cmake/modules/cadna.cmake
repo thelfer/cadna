@@ -11,14 +11,20 @@ macro(cadna_project cadna_version_major cadna_version_minor cadna_version_patch)
   add_definitions("-DVERSION=\"\\\"${VERSION}\\\"\"")
 endmacro(cadna_project)
 
+set(CPACK_COMPONENTS_ALL core)
+set(CPACK_COMPONENT_CORE_DESCRIPTION 
+  "Contains all the core libraries developped within CADNA")
+
 macro(install_header1 file)
     install(FILES ${file}
-      DESTINATION "include")
+      DESTINATION "include"
+      COMPONENT core)
 endmacro(install_header1)
 
 macro(install_header2 dir file)
     install(FILES ${dir}/${file}
-      DESTINATION "include/${dir}")
+      DESTINATION "include/${dir}"
+      COMPONENT core)
 endmacro(install_header2)
 
 macro(install_header arg1)
@@ -35,10 +41,12 @@ macro(cadna_library name)
   endif(${ARGC} LESS 2)
   add_library(${name} SHARED ${ARGN})
   if(WIN32)
-    install(TARGETS ${name} DESTINATION bin)
+    install(TARGETS ${name} DESTINATION bin
+      COMPONENT core)
   else(WIN32)
     install(TARGETS ${name}
-      DESTINATION lib${LIB_SUFFIX})
+      DESTINATION lib${LIB_SUFFIX}
+      COMPONENT core)
   endif(WIN32)
   if(enable-static)
     add_library(${name}-static STATIC ${ARGN})
@@ -56,9 +64,12 @@ macro(cadna_library name)
     set_target_properties(${name}-static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
     set_target_properties(${name}-static PROPERTIES COMPILE_FLAGS "-D${name}_EXPORTS -DCADNA_STATIC_BUILD")
     if(WIN32)
-      install(TARGETS ${name}-static DESTINATION bin)
+      install(TARGETS ${name}-static
+	DESTINATION bin COMPONENT core)
     else(WIN32)
-      install(TARGETS ${name}-static DESTINATION lib${LIB_SUFFIX})
+      install(TARGETS ${name}-static
+	DESTINATION lib${LIB_SUFFIX} COMPONENT core)
     endif(WIN32)
   endif(enable-static)
 endmacro(cadna_library)
+

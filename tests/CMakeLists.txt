@@ -21,6 +21,7 @@ cadna_test(test6)
 cadna_test(test7)
 cadna_test(test8)
 cadna_test(test-cmath)
+cadna_test(test-typetraits)
 cadna_test(test-numeric-type)
 
 # libc++ is really touchy about complex

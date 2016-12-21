@@ -33,7 +33,7 @@
 namespace cadna{
 
   constexpr const int DIGIT_NOT_COMPUTED = -1;
-  constexpr const int  RELIABLE_RESULT   = 255;
+  constexpr const int RELIABLE_RESULT    = 255;
 
   template<typename T1,typename T2>
   struct promote{
@@ -91,30 +91,47 @@ namespace cadna{
     static_assert(is_cxx_floating_point_type<T>::value,
 		  "numeric_type : template parameter "
 		  "must a standard floating point type");
+    //! a simple alias
     using value_type = T;
+    //! three approximations of the underlying number
     value_type x,y,z;
+    //! current number of significant digits
     mutable int accuracy = default_accuracy<value_type>::value;
     //! default constructor
     constexpr numeric_type(void)
       : x(value_type{0}),y(value_type{0}),z(value_type{0})
     {}
+    //! copy constructor
     template<typename T2>
     numeric_type(const numeric_type<T2>& v)
       : x(v.x), y(v.y), z(v.z),
 	accuracy(std::min(v.accuracy,default_accuracy<value_type>::value))
     {}
+    //! assignement from a standard numeric type
     template<typename T2,
 	     typename = typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 						bool>::type>
     constexpr numeric_type(const T2& a)
       : x(a),y(a),z(a)
     {}
-    template<typename T2,
-	     typename = typename std::enable_if<is_cxx_fundamental_type<T2>::value,
+    /*!
+     * \brief constructor from three values
+     * \param[in] a: value of the first  approximation of the number
+     * \param[in] b: value of the second approximation of the number
+     * \param[in] c: value of the third  approximation of the number
+     */
+    template<typename T2,typename T3,typename T4,
+	     typename = typename std::enable_if<is_cxx_fundamental_type<T2>::value&&
+						is_cxx_fundamental_type<T3>::value&&
+						is_cxx_fundamental_type<T4>::value,
 						bool>::type>
-    constexpr numeric_type(const T2& a, const T2& b, const T2& c)
+    constexpr numeric_type(const T2& a, const T3& b, const T4& c)
       : x(a),y(b),z(c),accuracy(DIGIT_NOT_COMPUTED)
     {}
+    /*!
+     * \brief constructor from an initializer list
+     * \param[in] v: values
+     */
     template<typename T2,
 	     typename = typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 						bool>::type>
@@ -131,13 +148,17 @@ namespace cadna{
 	throw(invalid_initialiser_list_size(v.size()));
       }
     }
+    //! move constructor
     constexpr numeric_type(numeric_type&&)      = default;
+    //! copy constructor
     constexpr numeric_type(const numeric_type&) = default;
+    //! move assignement
     CADNA_CONSTEXPR numeric_type&
     operator=(numeric_type&&) = default;
+    //! standard assignement
     CADNA_CONSTEXPR numeric_type&
     operator=(const numeric_type&) = default;
-    // assignement to standard C++ types
+    // assignement from standard C++ types
     template<typename T2>
     CADNA_CONSTEXPR typename std::enable_if<is_cxx_fundamental_type<T2>::value,
 					    numeric_type&>::type
@@ -150,9 +171,9 @@ namespace cadna{
 
   // summation
   template<typename T>
-  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&)                CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&) CADNA_ALWAYS_INLINE;
   template<typename T>
-  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&,int)             CADNA_ALWAYS_INLINE;
+  CADNA_INLINE numeric_type<T> operator++(numeric_type<T>&,int) CADNA_ALWAYS_INLINE;
   template<typename T>
   CADNA_CONSTEXPR numeric_type<T> operator+(const numeric_type<T>&)  CADNA_ALWAYS_INLINE;
   // decrement operators
@@ -372,10 +393,10 @@ namespace cadna{
 
 } // end of namespace cadna
 
-#include "numeric_type.ixx"
-#include "numeric_limits.hxx"
-#include "cmath.hxx"
-#include "to_string.hxx"
-#include "type_traits.hxx"
+#include"cadna/numeric_type.ixx"
+#include"cadna/numeric_limits.hxx"
+#include"cadna/cmath.hxx"
+#include"cadna/to_string.hxx"
+#include"cadna/type_traits.hxx"
 
 #endif /* _LIB_NUMERIC_TYPE_HXX_ */

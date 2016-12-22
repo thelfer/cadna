@@ -53,6 +53,17 @@ if(enable-python-bindings)
   set(CPACK_COMPONENT_PYTHON_BINDINGS_DEPENDS core)
 endif(enable-python-bindings)
 
+option(enable-fortran-bindings "enable  fortran bindings support" OFF)
+if(enable-fortran-bindings)
+  enable_language(Fortran)
+  list(APPEND CPACK_COMPONENTS_ALL fortran_bindings)
+  set(CPACK_COMPONENT_FORTRAN_BINDINGS_DEPENDS core)
+  set(CMAKE_Fortran_MODULE_DIRECTORY
+    ${CMAKE_BINARY_DIR}/bindings/fortran/include)
+  install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/
+    DESTINATION lib/${CMAKE_PROJECT_NAME}-${CADNA_VERSION}
+    COMPONENT fortran_bindings)
+endif(enable-fortran-bindings)
 
 # testing
 set(CTEST_CONFIGURATION_TYPE "${JOB_BUILD_CONFIGURATION}")

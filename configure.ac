@@ -5,6 +5,8 @@ AC_PREREQ(2.59)
 AC_INIT(CADNA,3.0-dev, cadna-team@lip6.fr)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
+AC_CANONICAL_HOST
+AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE([-Wall dist-bzip2 tar-ustar])
 
@@ -117,6 +119,64 @@ AC_CHECK_LIB(m,modf,[HAVE_LIBM=ok],AC_MSG_ERROR(You need libm with functions on 
 
 #,[AC_DEFINE(HAVE_LOG2)],[AC_MSG_ERROR([cannot find log2 function])])
 
+# enable python bindings
+use_python_bindings=no
+AC_ARG_ENABLE([python_bindings],
+    AC_HELP_STRING([--enable-python-bindings],
+	[Compile python bindings and python tests]),
+    [use_python_bindings="yes"],[])
+
+have_python=no
+if test "x$use_python_bindings" != "xno" ;
+then
+    AM_PATH_PYTHON([2.4],,[:])
+    if test  "$PYTHON" != : ;
+	then
+#python includes
+	file=$(mktemp)
+	cat > $file << EOF
+#!$PYTHON
+from distutils import sysconfig
+if sysconfig.get_python_inc() != sysconfig.get_python_inc(plat_specific=True) :
+    print '-I' + sysconfig.get_python_inc() + '-I' + sysconfig.get_python_inc(plat_specific=True)
+else :
+    print '-I' + sysconfig.get_python_inc()
+EOF
+	PYTHON_INCLUDES=$($PYTHON $file)
+	rm $file
+	AC_DEFINE_UNQUOTED(CADNA_PYTHON_INCLUDES,"$PYTHON_INCLUDES")
+#python libraries
+	file=$(mktemp)
+	cat > $file << EOF
+#!$PYTHON
+from distutils import sysconfig
+print '-L' + sysconfig.PREFIX  +'/lib/ ' + '-lpython'+sysconfig.get_python_version()
+EOF
+	PYTHON_LIBS=$($PYTHON $file)
+	rm $file
+	AC_DEFINE_UNQUOTED(CADNA_PYTHON_LIBS,"$PYTHON_LIBS")
+	PYTHONPATH=$(echo $PYTHON |sed 's/\/bin\/python.*//')
+	AC_SUBST(PYTHONPATH)
+	have_python=yes
+    fi
+fi
+
+if test "x$use_python_bindings" != "xno";
+    then  
+    if test "x$have_python" == "xno";
+    then
+	AC_MSG_ERROR("'python' not found. python is mandatory for python bindings.")
+    fi
+    CHECK_BOOST
+    CHECK_BOOST_PYTHON
+    CADNA_PYTHON_BINDINGS=yes
+    AC_DEFINE(HAVE_CADNA_PYTHON_BINDINGS)
+    AM_CONDITIONAL([CADNA_PYTHON_BINDINGS],true)
+else
+    CADNA_PYTHON_BINDINGS=no
+    AM_CONDITIONAL([CADNA_PYTHON_BINDINGS],false)
+fi
+
 AC_CONFIG_FILES([
 	Makefile
 	cmake/Makefile
@@ -125,6 +185,13 @@ AC_CONFIG_FILES([
 	src/Makefile
 	cadna-config/Makefile
 	cadna-config/cadna-config.hxx
+	bindings/Makefile
+	bindings/python/Makefile
+	bindings/python/src/Makefile
+	bindings/python/tests/Makefile	
+	bindings/fortran/Makefile
+	bindings/fortran/src/Makefile
+	bindings/fortran/tests/Makefile	
 	tests/Makefile
 	])
 

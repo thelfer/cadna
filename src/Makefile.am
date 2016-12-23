@@ -15,7 +15,7 @@ libcadna_cxx_la_SOURCES= cmath_specific.cxx      \
 			 backtrace.cxx
 
 libcadna_cxx_la_CPPFLAGS = $(AM_CPPFLAGS) -Dcadna_cxx_EXPORTS
-libcadna_cxx_la_CXXFLAGS=-O3 -g -Wunused -frounding-math -std=c++11
+libcadna_cxx_la_CXXFLAGS = -O3 -g -Wunused -frounding-math -std=c++11
 
 nodist_libcadna_cxx_la_SOURCES = rounding.s 
 EXTRA_libcadna_cxx_la_SOURCES  = cmath_other.cxx       \

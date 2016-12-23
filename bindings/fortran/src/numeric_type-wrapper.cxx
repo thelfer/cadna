@@ -1,3 +1,4 @@
+#include<cstdint>
 #include "cadna/numeric_type.hxx"
 
 #define DEFINE_CADNA_FORTRAN_OPERTOR_DECL(TYPE,OP)			\
@@ -36,6 +37,31 @@ extern "C" {
   CADNA_VISIBILITY_EXPORT double_st 
   cadna_fortran_double_st_new(const double*);
 
+  CADNA_VISIBILITY_EXPORT double_st 
+  cadna_fortran_double_st_new2(const float*);
+
+  CADNA_VISIBILITY_EXPORT double_st 
+  cadna_fortran_double_st_new3(const int32_t*);
+
+  CADNA_VISIBILITY_EXPORT double_st 
+  cadna_fortran_double_st_new4(const int64_t*);
+
+  CADNA_VISIBILITY_EXPORT void 
+  cadna_fortran_double_st_assign(double_st *,
+				  const double*);
+
+  CADNA_VISIBILITY_EXPORT void 
+  cadna_fortran_double_st_assign2(double_st *,
+				  const float*);
+
+  CADNA_VISIBILITY_EXPORT void 
+  cadna_fortran_double_st_assign3(double_st *,
+				  const int32_t*);
+
+  CADNA_VISIBILITY_EXPORT void 
+  cadna_fortran_double_st_assign4(double_st *,
+				  const int64_t*);
+  
   CADNA_VISIBILITY_EXPORT int
   cadna_fortran_double_st_numerical_noise(const double_st *);
 
@@ -57,6 +83,38 @@ extern "C" {
     return double_st{*v};
   }
 
+  double_st cadna_fortran_double_st_new2(const float* v){
+    return double_st{*v};
+  }
+ 
+  double_st cadna_fortran_double_st_new3(const int32_t* v){
+    return double_st{*v};
+  }
+
+  double_st cadna_fortran_double_st_new4(const int64_t* v){
+    return double_st{*v};
+  }  
+
+  void cadna_fortran_double_st_assign(double_st* self,
+				       const double* src){
+    *self = *src;
+  }
+
+  void cadna_fortran_double_st_assign2(double_st* self,
+				       const float* src){
+    *self = *src;
+  }
+ 
+  void cadna_fortran_double_st_assign3(double_st* self,
+				       const int32_t* src){
+    *self = *src;
+  }
+
+  void cadna_fortran_double_st_assign4(double_st* self,
+				       const int64_t* src){
+    *self = *src;
+  }  
+  
   int cadna_fortran_double_st_numerical_noise(const double_st *v){
     // convert to int as bool is not supported in C
     return cadna::numericalnoise(*v) ? 1 :0;

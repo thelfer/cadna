@@ -10,8 +10,47 @@ module cadna
      type(double_st) function cadna_fortran_double_st_new (v) bind ( c )
        use iso_c_binding
        import :: double_st
-       real (c_double), intent(in) :: v
+       real (kind=8), intent(in) :: v
      end function cadna_fortran_double_st_new
+     type(double_st) function cadna_fortran_double_st_new2 (v) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       real (kind=4), intent(in) :: v
+     end function cadna_fortran_double_st_new2
+     type(double_st) function cadna_fortran_double_st_new3 (v) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       integer (kind=4), intent(in) :: v
+     end function cadna_fortran_double_st_new3
+     type(double_st) function cadna_fortran_double_st_new4 (v) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       integer (kind=8), intent(in) :: v
+     end function cadna_fortran_double_st_new4
+     subroutine cadna_fortran_double_st_assign (self,src) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       type(double_st), intent(out) :: self
+       real (kind=8), intent(in) :: src
+     end subroutine cadna_fortran_double_st_assign
+     subroutine cadna_fortran_double_st_assign2 (self,src) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       type(double_st), intent(out) :: self
+       real (kind=4), intent(in) :: src
+     end subroutine cadna_fortran_double_st_assign2
+     subroutine cadna_fortran_double_st_assign3 (self,src) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       type(double_st), intent(out) :: self
+       integer (kind=4), intent(in) :: src
+     end subroutine cadna_fortran_double_st_assign3
+     subroutine cadna_fortran_double_st_assign4 (self,src) bind ( c )
+       use iso_c_binding
+       import :: double_st
+       type(double_st), intent(out) :: self
+       integer (kind=8), intent(in) :: src
+     end subroutine cadna_fortran_double_st_assign4
      type(double_st) function cadna_fortran_double_st_add (v1,v2) bind ( c )
        use iso_c_binding
        import :: double_st
@@ -150,8 +189,17 @@ module cadna
      end function approx_digit
   end interface
   interface double_st
-    procedure cadna_fortran_double_st_new
-  end interface
+     procedure cadna_fortran_double_st_new
+     procedure cadna_fortran_double_st_new2
+     procedure cadna_fortran_double_st_new3
+     procedure cadna_fortran_double_st_new4
+  end interface double_st
+   interface assignment(=)
+     procedure cadna_fortran_double_st_assign
+     procedure cadna_fortran_double_st_assign2
+     procedure cadna_fortran_double_st_assign3
+     procedure cadna_fortran_double_st_assign4
+  end interface assignment(=)
   interface operator (+)
      procedure cadna_fortran_double_st_add
      procedure cadna_fortran_double_st_add1

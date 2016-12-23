@@ -1,137 +1,83 @@
 #include "cadna/numeric_type.hxx"
 
+#define DEFINE_CADNA_FORTRAN_OPERTOR_DECL(TYPE,OP)			\
+  CADNA_VISIBILITY_EXPORT TYPE						\
+  cadna_fortran_ ## TYPE ## _ ## OP (const TYPE*,const TYPE*);		\
+  CADNA_VISIBILITY_EXPORT TYPE						\
+  cadna_fortran_ ## TYPE ## _ ## OP ## 1(const TYPE*,const double*);	\
+  CADNA_VISIBILITY_EXPORT TYPE						\
+  cadna_fortran_ ## TYPE ## _ ## OP ## 2(const double*,const TYPE*);	\
+  CADNA_VISIBILITY_EXPORT TYPE						\
+  cadna_fortran_ ## TYPE ## _ ## OP ## 3(const TYPE*,const int*);	\
+  CADNA_VISIBILITY_EXPORT TYPE						\
+  cadna_fortran_ ## TYPE ## _ ## OP ## 4(const int*,const TYPE*)
+
+#define DEFINE_CADNA_FORTRAN_OPERTOR_INPL(TYPE,OP,OP2)			        \
+  TYPE cadna_fortran_ ## TYPE ## _ ## OP (const TYPE* x,const TYPE* y){         \
+    return (*x) OP2 (*y);                                                       \
+  }									        \
+  TYPE cadna_fortran_ ## TYPE ## _ ## OP ## 1(const TYPE*   x,const double* y){ \
+    return (*x) OP2 (*y);                                                       \
+  }									        \
+  TYPE cadna_fortran_ ## TYPE ## _ ## OP ## 2(const double* x,const TYPE* y){   \
+    return (*x) OP2 (*y);                                                       \
+  }									        \
+  TYPE cadna_fortran_ ## TYPE ## _ ## OP ## 3(const TYPE*   x,const int* y){    \
+    return (*x) OP2 (*y);                                                       \
+  }									        \
+  TYPE cadna_fortran_ ## TYPE ## _ ## OP ## 4(const int*    x,const TYPE* y){   \
+    return (*x) OP2 (*y);                                                       \
+  }
+
 extern "C" {
 
   using double_st = cadna::numeric_type<double>;
 
   CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_new_double_st(const double* v){
-    return double_st{*v};
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_add(const double_st* x,
-		    const double_st* y){
-    return *x+*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_add1(const double_st* x,
-		     const double* y){
-    return *x+*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_add2(const double* x,
-		     const double_st* y){
-    return *x+*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_add4(const double_st* x,
-		     const int* y){
-    return *x+*y;
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_add5(const int* x,
-		     const double_st* y){
-    return *x+*y;
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_sub(const double_st* x,
-		    const double_st* y){
-    return *x-*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_sub1(const double_st* x,
-		     const double* y){
-    return *x-*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_sub2(const double* x,
-		     const double_st* y){
-    return *x-*y;
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_sub4(const double_st* x,
-		     const int* y){
-    return *x-*y;
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_sub5(const int* x,
-		     const double_st* y){
-    return *x-*y;
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_mul(const double_st* x,
-		    const double_st* y){
-    return (*x)*(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_mul2(const double_st* x,
-		     const double* y){
-    return (*x)*(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_mul3(const double* x,
-		     const double_st* y){
-    return (*x)*(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_mul4(const double_st* x,
-		     const int* y){
-    return (*x)*(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_mul5(const int* x,
-		     const double_st* y){
-    return (*x)*(*y);
-  }
-  
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_div(const double_st* x,
-		    const double_st* y){
-    return (*x)/(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_div2(const double_st* x,
-		     const double* y){
-    return (*x)/(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_div3(const double* x,
-		     const double_st* y){
-    return (*x)/(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_div4(const double_st* x,
-		     const int* y){
-    return (*x)/(*y);
-  }
-
-  CADNA_VISIBILITY_EXPORT double_st 
-  cadna_fortran_div5(const int* x,
-		     const double_st* y){
-    return (*x)/(*y);
-  }
+  cadna_fortran_double_st_new(const double*);
 
   CADNA_VISIBILITY_EXPORT int
-  cadna_fortran_numerical_noise(const double_st *v){
-    return cadna::numericalnoise(*v);
+  cadna_fortran_double_st_numerical_noise(const double_st *);
+
+  CADNA_VISIBILITY_EXPORT int
+  cadna_fortran_double_st_computedzero(const double_st *);
+
+  CADNA_VISIBILITY_EXPORT int
+  nb_significant_digit(const double_st*);
+
+  CADNA_VISIBILITY_EXPORT int
+  approx_digit(const double_st*);
+    
+  DEFINE_CADNA_FORTRAN_OPERTOR_DECL(double_st,add);
+  DEFINE_CADNA_FORTRAN_OPERTOR_DECL(double_st,sub);
+  DEFINE_CADNA_FORTRAN_OPERTOR_DECL(double_st,mul);
+  DEFINE_CADNA_FORTRAN_OPERTOR_DECL(double_st,div);
+
+  double_st cadna_fortran_double_st_new(const double* v){
+    return double_st{*v};
+  }
+
+  int cadna_fortran_double_st_numerical_noise(const double_st *v){
+    // convert to int as bool is not supported in C
+    return cadna::numericalnoise(*v) ? 1 :0;
+  }
+
+  int cadna_fortran_double_st_computedzero(const double_st *v){
+    // convert to int as bool is not supported in C
+    return cadna::computedzero(*v) ? 1 :0;
   }
   
+  int nb_significant_digit(const double_st* v){
+    return nb_significant_digit(*v);
+  }
+
+  int approx_digit(const double_st* v){
+    return approx_digit(*v);
+  }
+  
+  DEFINE_CADNA_FORTRAN_OPERTOR_INPL(double_st,add,+)
+  DEFINE_CADNA_FORTRAN_OPERTOR_INPL(double_st,sub,-)
+  DEFINE_CADNA_FORTRAN_OPERTOR_INPL(double_st,mul,*)
+  DEFINE_CADNA_FORTRAN_OPERTOR_INPL(double_st,div,/)
+
 } // end of extern "C"

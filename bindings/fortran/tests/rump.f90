@@ -10,11 +10,15 @@ program main
   implicit none
   type(double_st) x,y,z
   type(double_st),external :: rump
-  x = double_st(10864._c_double)
-  y = double_st(18817._c_double)
-  z=rump(x,y)
-  if(numericalnoise(z)) then
-     write(*,*) 'numerical noise'
+  x = double_st(10864)
+  y = double_st(18817)
+  z = rump(x,y)
+  if (.not.numericalnoise(z)) then
+     write(*,*) 'z is not numerical noise'
+     call exit(1)
   endif
-  write(*,*) nb_significant_digit(z)
+  if (nb_significant_digit(z).ne.0) then
+     write(*,*) 'z has at least significant digit'
+     call exit(1)
+  endif
 end program main

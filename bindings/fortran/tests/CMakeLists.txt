@@ -10,3 +10,4 @@ macro(cadna_fortran_test test_arg)
 endmacro(cadna_fortran_test)
 
 cadna_fortran_test(rump)
+cadna_fortran_test(root)

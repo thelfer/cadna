@@ -1,4 +1,4 @@
-set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -std=c++11")
+set(COMPILER_CXXFLAGS "${COMPILER_CXXFLAGS} -std=c++11 -ipo")
 
 cadna_enable_cxx_compiler_flag(COMPILER_WARNINGS  "Wall")
 # 383 : value copied to temporary, reference to temporary used
@@ -16,7 +16,6 @@ else(${DIAG_DISABLE_FLAG_AVAILABLE})
 endif(${DIAG_DISABLE_FLAG_AVAILABLE})
 
 cadna_enable_cxx_compiler_flag(OPTIMISATION_FLAGS_MARCH "xHost")
-cadna_enable_cxx_compiler_flag(CMAKE_CXX_FLAGS    "ipo")
 
 cadna_enable_cxx_compiler_flag(VISIBILITY_FLAGS "fvisibility=hidden")
 cadna_enable_cxx_compiler_flag(VISIBILITY_FLAGS "fvisibility-inlines-hidden")

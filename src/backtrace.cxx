@@ -5,6 +5,8 @@
  * \date   27 sept. 2015
  */
 
+#include<sstream>
+#include<iomanip>
 #include"cadna/backtrace.hxx"
 
 #ifdef _WIN32
@@ -13,19 +15,19 @@
 #endif
 #include<windows.h>
 #else /* _WIN32 */
-#if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
-#include<execinfo.h>
-#include<cxxabi.h>
-#include<memory>
-#else /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
 #ifdef CADNA_HAVE_LIBUNWIND
 #define UNW_LOCAL_ONLY
 #include <libunwind.h>
 #ifdef __clang__
 #include<cxxabi.h>
 #endif
-#endif /* CADNA_HAVE_LIBUNWIND */
+# else /* CADNA_HAVE_LIBUNWIND */
+#if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
+#include<execinfo.h>
+#include<cxxabi.h>
+#include<memory>
 #endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
+#endif /* CADNA_HAVE_LIBUNWIND */
 #endif /* _WIN32 */
 
 namespace cadna{
@@ -39,9 +41,9 @@ namespace cadna{
   backtrace_node::backtrace_node(std::string l,
 				 std::string f,
 				 std::string o)
-    : library(l),
-      function(f),
-      offset(o)
+    : library(std::move(l)),
+      function(std::move(f)),
+      offset(std::move(o))
   {}
 
 #ifdef _WIN32
@@ -108,6 +110,51 @@ namespace cadna{
   } // end of backtrace_win32
 #endif /* _WIN64 */
 #else /* _WIN32 */
+#if (defined CADNA_HAVE_LIBUNWIND)
+  /*!
+   * \return the backtrace using libunwind
+   * \see https://gist.github.com/banthar/1343977
+   */
+  static std::vector<backtrace_node>
+  backtrace_unwind(void){
+    constexpr const size_t ns = 128;
+    auto r = std::vector<backtrace_node>{};
+    auto n = std::vector<char>{};
+    n.resize(ns);
+    unw_context_t uc;
+    unw_getcontext(&uc);
+    unw_cursor_t cursor;
+    unw_init_local(&cursor, &uc);
+    int skip = 1;
+    while(unw_step(&cursor)>0){
+      unw_word_t pc,offset;
+      unw_get_reg(&cursor, UNW_REG_IP, &pc);
+      if(pc==0){
+	break;
+      }
+      if(skip<=0){
+	if(unw_get_proc_name(&cursor,&n[0],ns,&offset)==0){
+	  auto to_hex = [](const unw_word_t& a)
+	  {
+	    std::ostringstream ss;
+	    ss << std::hex << a;
+	    return ss.str();
+	  };
+#ifdef __clang__
+	  // TODO: call cxx abi to demangle the name
+	  r.emplace_back("0x"+to_hex(pc),&n[0],"0x"+to_hex(offset));
+#else
+	  r.emplace_back("0x"+to_hex(pc),&n[0],"0x"+to_hex(offset));
+#endif
+	} else {
+	  r.emplace_back("","<unknown function name>","");
+	}
+      }
+      skip--;
+    }
+    return r;
+  } // end of backtrace_unwind
+#else
 #if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
   /*!
    * \return the backtrace using the libstdc++ bactrace function
@@ -182,40 +229,7 @@ namespace cadna{
     std::free(funcname);
     return r;
   } // end of backtrace_libstdcxx
-#elif (defined CADNA_HAVE_LIBUNWIND)
-  /*!
-   * \return the backtrace using libunwind
-   * \see https://gist.github.com/banthar/1343977
-   */
-  static std::vector<backtrace_node>
-  backtrace_unwind(void){
-    constexpr const size_t ns = 128;
-    auto r = std::vector<backtrace_node>{};
-    auto n = std::vector<char>{};
-    n.resize(ns);
-    unw_context_t uc;
-    unw_getcontext(&uc);
-    unw_cursor_t cursor;
-    unw_init_local(&cursor, &uc);
-    int skip = 1;
-    while(unw_step(&cursor)>0){
-      unw_word_t offset;
-      if(skip<=0){
-	if(unw_get_proc_name(&cursor,&n[0],ns,&offset)==0){
-#ifdef __clang__
-	  // TODO: call cxx abi to demangle the name
-	  r.emplace_back("",&n[0],"");
-#else
-	  r.emplace_back("",&n[0],"");
-#endif
-	} else {
-	  r.emplace_back("","<unknown function name>","");
-	}
-      }
-      skip--;
-    }
-    return r;
-  } // end of backtrace_unwind
+#endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
 #endif /* CADNA_HAVE_LIBUNWIND */
 #endif /* _WIN32 */
 
@@ -224,13 +238,15 @@ namespace cadna{
 #ifdef _WIN32
     return backtrace_win32();
 #else /* _WIN32 */
+#if (defined CADNA_HAVE_LIBUNWIND)
+    return backtrace_unwind();
+#else
 #if (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__)
     return backtrace_libstdcxx();
-#elif (defined CADNA_HAVE_LIBUNWIND)
-    return backtrace_unwind();
-#else /* default (do nothing) */
-    return {};
-#endif /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
+#else  /* default (do nothing) */
+   return {};
+#endif  /* (defined __GNUC__) && (!defined __INTEL_COMPILER) && (!defined __clang__) */
+#endif // (defined CADNA_HAVE_LIBUNWIND)
 #endif /* _WIN32 */
   } // end of backtrace
 

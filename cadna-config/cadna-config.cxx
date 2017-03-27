@@ -276,7 +276,7 @@ int main(const int argc,
   }
 
   if(libs){
-    std::cout << "-L" << libDir() << " ";
+    std::cout << "-L" << libDir() << " -lcadna_cxx";
   }
 
   if(ldflags){

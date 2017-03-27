@@ -28,9 +28,16 @@
   CADNA_VISIBILITY_EXPORT                                                       \
   cadna::numeric_type<float> F##f(const cadna::numeric_type<float>&) noexcept;
 
-#define CADNA_STDMATH_UNARYFUNCTION_DECL( F )  \
-  CADNA_STDMATH_DOUBLE_UNARYFUNCTION_DECL( F ) \
+#define CADNA_STDMATH_UNARYFUNCTION_DECL( F )                                   \
+  CADNA_STDMATH_DOUBLE_UNARYFUNCTION_DECL( F )                                  \
   CADNA_STDMATH_FLOAT_UNARYFUNCTION_DECL( F )
+
+  // namespace cadna{                                                              
+  //   CADNA_VISIBILITY_EXPORT                                                     
+  //   cadna::numeric_type<float> F(const cadna::numeric_type<float>&) noexcept;   
+  //   CADNA_VISIBILITY_EXPORT                                                     
+  //   cadna::numeric_type<double> F(const cadna::numeric_type<double>&) noexcept; 
+  // }                                                                             
 
 #define CADNA_STDMATH_BINARYFUNCTION_DECL( F )                                          \
   CADNA_BEGIN_NAMESPACE_STD				                                \

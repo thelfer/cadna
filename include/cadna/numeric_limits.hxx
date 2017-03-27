@@ -56,6 +56,21 @@ namespace std{
     CADNA_NUMERIC_LIMITS_MEMBER(float_denorm_style,has_denorm)
     CADNA_NUMERIC_LIMITS_MEMBER(float_round_style,round_style)
   }; // end of struct numeric_limits<numeric_type<T>>
+
+  template<typename T>
+  struct numeric_limits<const cadna::numeric_type<T>>
+    : public numeric_limits<cadna::numeric_type<T>>
+  {}; // end of struct numeric_limits<numeric_type<T>>
+
+  template<typename T>
+  struct numeric_limits<volatile cadna::numeric_type<T>>
+    : public numeric_limits<cadna::numeric_type<T>>
+  {}; // end of struct numeric_limits<numeric_type<T>>
+
+  template<typename T>
+  struct numeric_limits<const volatile cadna::numeric_type<T>>
+    : public numeric_limits<cadna::numeric_type<T>>
+  {}; // end of struct numeric_limits<numeric_type<T>>
   
 } // end of namespace std;
 

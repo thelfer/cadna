@@ -23,6 +23,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
   SETUP_TARGET_FOR_COVERAGE(coverage ctest coverage)
 endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
+option(enable-libunwind "enable libunwind" OFF)
+if(enable-libunwind)
+  include(cmake/modules/libunwind.cmake)
+endif(enable-libunwind)
+
 option(enable-python-bindings "enable  python bindings support" OFF)
 if(enable-python-bindings)
   find_package(PythonLibs   REQUIRED)
